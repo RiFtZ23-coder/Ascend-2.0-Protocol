@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superhuman Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#090b11;--bg2:#0f1219;--card:#141820;--cardH:#1a1f2a;
+  --bdr:#1e2430;--bdrA:#b8894433;
+  --amber:#b88944;--amberD:#b8894466;--amberB:#d4a85c;--amberGlow:#b8894418;
+  --sage:#7a9e82;--sageD:#7a9e8244;--sageBright:#94b89c;
+  --rose:#b85a6a;--roseD:#b85a6a33;
+  --slate:#5b7a9e;--slateD:#5b7a9e33;
+  --sand:#c4b89a;--sandD:#c4b89a33;
+  --warm:#d4c4a8;--txt:#d8d0c4;--txt2:#948c80;--txtM:#5c564c;
+  --check:#7a9e82;--checkGlow:#7a9e8240;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Sora',system-ui,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 25% -5%,#b8894410 0%,transparent 55%),radial-gradient(ellipse at 75% 105%,#7a9e8208 0%,transparent 55%);pointer-events:none;z-index:0}
+.c{max-width:920px;margin:0 auto;padding:20px 22px 56px;position:relative;z-index:1}
+
+/* === HEADER === */
+header{text-align:center;padding:48px 0 36px;border-bottom:1px solid var(--bdr);margin-bottom:28px;position:relative}
+header::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+header .ov{font-family:var(--font-mono);font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--amber);margin-bottom:14px;opacity:.8}
+header h1{font-family:var(--font-display);font-size:clamp(30px,5.5vw,50px);font-weight:700;line-height:1.1;margin-bottom:10px;letter-spacing:-.5px}
+header h1 em{font-style:italic;background:linear-gradient(135deg,var(--amber),var(--amberB));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header .sub{font-size:12.5px;color:var(--txt2);max-width:520px;margin:0 auto;font-weight:300}
+.vtag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;padding:4px 12px;border-radius:20px;background:var(--sageD);color:var(--sage);margin-top:12px;text-transform:uppercase}
+.vtag::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sage);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* === NAV — hover underline === */
+.nav-primary{display:flex;gap:3px;background:var(--bg2);border-radius:14px;padding:4px;margin-bottom:12px;border:1px solid var(--bdr)}
+.nav-secondary{display:flex;gap:3px;background:var(--bg2);border-radius:10px;padding:3px;margin-bottom:28px;border:1px solid var(--bdr);opacity:.8}
+.sec-label{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txtM);margin-bottom:5px;padding-left:6px}
+.tb{flex:1;padding:11px 12px;border:none;background:transparent;color:var(--txt2);font-family:var(--font-body);font-size:11.5px;font-weight:500;cursor:pointer;border-radius:10px;transition:all .3s cubic-bezier(.4,0,.2,1);white-space:nowrap;position:relative;overflow:hidden}
+.tb::after{content:'';position:absolute;bottom:4px;left:50%;width:0;height:1.5px;background:var(--amber);transition:all .3s cubic-bezier(.4,0,.2,1);transform:translateX(-50%);border-radius:1px}
+.tb:hover{color:var(--txt);background:var(--card)}
+.tb:hover::after{width:40%}
+.tb.a{background:var(--card);color:var(--amberB);box-shadow:0 2px 16px #00000050,inset 0 1px 0 #ffffff08}
+.tb.a::after{width:50%;background:var(--amberB)}
+.tb .ico{font-size:13px;margin-right:4px;vertical-align:-1px}
+.nav-secondary .tb{font-size:10.5px;padding:7px 10px;color:var(--txtM)}
+.nav-secondary .tb.a{color:var(--sageBright)}
+.nav-secondary .tb::after{background:var(--sage)}
+.nav-secondary .tb.a::after{background:var(--sageBright);width:40%}
+
+/* === TAB TRANSITIONS === */
+.tc{display:none;opacity:0;transform:translateY(10px)}.tc.a{display:block;animation:tabIn .45s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes tabIn{to{opacity:1;transform:translateY(0)}}
+.tc.a>.cd,.tc.a>.sb,.tc.a>.rb{opacity:0;animation:cardIn .4s ease both}
+.tc.a>:nth-child(1){animation-delay:.04s}.tc.a>:nth-child(2){animation-delay:.08s}
+.tc.a>:nth-child(3){animation-delay:.12s}.tc.a>:nth-child(4){animation-delay:.16s}
+.tc.a>:nth-child(5){animation-delay:.2s}.tc.a>:nth-child(6){animation-delay:.24s}
+.tc.a>:nth-child(7){animation-delay:.28s}.tc.a>:nth-child(8){animation-delay:.32s}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* === MODULE HEADER === */
+.mh{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--bdr);position:relative;opacity:0;animation:cardIn .4s ease .02s both}
+.mh::after{content:'';position:absolute;bottom:-1px;left:0;width:40px;height:1px;background:var(--amber);transition:width .4s}
+.mh:hover::after{width:80px}
+.mh .mt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:var(--amberD);margin-bottom:5px}
+.mh h2{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:5px;letter-spacing:-.3px}
+.mh p{font-size:12.5px;color:var(--txt2);font-weight:300;max-width:650px}
+
+/* === CARD — shimmer hover === */
+.cd{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:20px;margin-bottom:12px;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,#ffffff04,transparent);transition:left .6s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.cd:hover::before{left:120%}
+.cd::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ffffff06,transparent)}
+.cd:hover{border-color:var(--bdrA);box-shadow:0 8px 32px #00000035;transform:translateY(-2px)}
+.cl{font-family:var(--font-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.cd h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:7px;letter-spacing:-.2px}
+.cd p{font-size:12px;color:var(--txt2);line-height:1.7}
+.cd strong{color:var(--txt);font-weight:600}
+.cd em{color:var(--sageBright);font-style:normal;font-weight:500}
+.d{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0;transition:box-shadow .3s}
+.cd:hover .d{box-shadow:0 0 8px currentColor}
+.d-g{background:var(--amber);color:var(--amber)}.d-c{background:var(--sage);color:var(--sage)}.d-r{background:var(--rose);color:var(--rose)}.d-b{background:var(--slate);color:var(--slate)}.d-n{background:var(--sage);color:var(--sage)}.d-o{background:var(--sand);color:var(--sand)}.d-s{background:var(--rose);color:var(--rose)}.d-t{background:var(--sageBright);color:var(--sageBright)}
+
+/* === TIMELINE — ripple hover === */
+.tl{position:relative}.tlb{position:relative;padding-left:32px;padding-bottom:16px}
+.tlb::before{content:'';position:absolute;left:9px;top:7px;bottom:0;width:1px;background:linear-gradient(180deg,var(--amberD),var(--bdr))}
+.tlb:last-child::before{display:none}
+.tlb .tld{position:absolute;left:3px;top:5px;width:13px;height:13px;border-radius:50%;border:2px solid var(--amber);background:var(--bg);transition:all .35s cubic-bezier(.4,0,.2,1)}
+.tlb:hover .tld{background:var(--amber);box-shadow:0 0 0 6px var(--amberGlow),0 0 14px var(--amberD)}
+.tlb:hover{padding-left:36px}
+.tlbl{font-family:var(--font-mono);font-size:11px;color:var(--amber);margin-bottom:2px;transition:color .2s}
+.tlb:hover .tlbl{color:var(--amberB)}
+.tlt{font-family:var(--font-display);font-weight:600;font-size:13.5px;margin-bottom:2px;transition:color .2s}
+.tlb:hover .tlt{color:var(--txt)}
+.tldt{font-size:11.5px;color:var(--txt2);line-height:1.6}
+.tldt .tc2{color:var(--sageBright);font-weight:500;font-size:10.5px}
+.tldt .bi{color:var(--amberB);font-weight:500;font-size:10.5px}
+
+/* === TABLE — accent border hover === */
+.st{width:100%;border-collapse:collapse;margin-top:8px;font-size:11.5px}
+.st thead th{font-family:var(--font-mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txtM);text-align:left;padding:6px 8px;border-bottom:1px solid var(--bdr);font-weight:500}
+.st td{padding:8px;border-bottom:1px solid var(--bdr);vertical-align:top;color:var(--txt2);transition:all .2s}
+.st tr:last-child td{border-bottom:none}
+.st tbody tr{position:relative}
+.st tbody tr::after{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--amber);border-radius:0 2px 2px 0;transition:width .25s cubic-bezier(.4,0,.2,1)}
+.st tbody tr:hover::after{width:2px}
+.st tbody tr:hover td{background:var(--cardH);padding-left:12px}
+.sn{color:var(--txt);font-weight:600}.sd{font-family:var(--font-mono);font-size:10.5px;color:var(--amber)}
+
+/* === TIER BARS === */
+.tier{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 14px;background:var(--bg2);border-radius:8px;border:1px solid var(--bdr);transition:border-color .3s}
+.tier:hover{border-color:var(--bdrA)}
+.tier-label{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;min-width:90px}
+.tier-bar{flex:1;height:4px;background:var(--bdr);border-radius:4px;overflow:hidden}
+.tier-fill{height:100%;border-radius:4px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.tier.vis .tier-fill{width:var(--tw)}
+.tier-count{font-family:var(--font-mono);font-size:10px;color:var(--txtM);min-width:50px;text-align:right}
+
+/* === FORMULA === */
+.fb{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:16px;margin:12px 0;font-family:var(--font-mono);font-size:11.5px;color:var(--txt2);line-height:2;transition:border-color .3s}
+.fb:hover{border-color:var(--amberD)}
+.fb .ft{font-family:var(--font-body);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--amberD);margin-bottom:6px;font-weight:600}
+.fb .v{color:var(--amberB);font-weight:500}.fb .u{color:var(--txtM)}.fb .r{color:var(--sage);font-weight:500}
+.fb .nt{font-family:var(--font-body);font-size:10.5px;color:var(--txtM);margin-top:5px;font-style:italic}
+
+/* === RULES === */
+.rb{background:var(--bg2);border:1px solid var(--amberD);border-left:3px solid var(--amber);border-radius:8px;padding:14px 16px;margin:16px 0;transition:border-left-width .2s}
+.rb:hover{border-left-width:5px}
+.rb h4{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:7px}
+.rb ul{list-style:none;padding:0}
+.rb li{font-size:11.5px;color:var(--txt2);padding:2px 0 2px 14px;position:relative;transition:padding-left .2s}
+.rb li:hover{padding-left:18px}
+.rb li::before{content:'›';position:absolute;left:0;color:var(--amberD);font-weight:700;transition:color .2s}
+.rb li:hover::before{color:var(--amber)}
+.rb li strong{color:var(--txt)}
+
+/* === SIGNAL === */
+.sb{background:var(--bg2);border-left:3px solid;border-radius:8px;padding:14px 16px;margin:12px 0;position:relative;overflow:hidden;transition:transform .2s}
+.sb:hover{transform:translateX(3px)}
+.sb::after{content:'';position:absolute;top:0;right:0;width:120px;height:100%;background:radial-gradient(ellipse at right,var(--amberGlow),transparent);pointer-events:none;transition:width .3s}
+.sb:hover::after{width:180px}
+.sb h4{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+.sb p{font-size:12px;color:var(--txt2);line-height:1.65}
+.sb strong{color:var(--txt)}.sb em{color:var(--sageBright);font-style:normal;font-weight:500}
+.sb-r{border-color:var(--rose);border:1px solid var(--roseD);border-left:3px solid var(--rose)}.sb-r h4{color:var(--rose)}
+.sb-t{border-color:var(--sage);border:1px solid var(--sageD);border-left:3px solid var(--sage)}.sb-t h4{color:var(--sage)}
+.sb-b{border-color:var(--slate);border:1px solid var(--slateD);border-left:3px solid var(--slate)}.sb-b h4{color:var(--slate)}
+.sb-g{border-color:var(--sage);border:1px solid var(--sageD);border-left:3px solid var(--sage)}.sb-g h4{color:var(--sage)}
+.sb-o{border-color:var(--sand);border:1px solid var(--sandD);border-left:3px solid var(--sand)}.sb-o h4{color:var(--sand)}
+
+/* === CLOCK === */
+.clock-wrap{display:flex;justify-content:center;margin:20px 0}
+.clock-wrap svg{max-width:320px;width:100%}
+.clock-segment{transition:opacity .3s,transform .3s,filter .3s;cursor:default;transform-origin:100px 100px;filter:brightness(1)}
+.clock-segment:hover{opacity:.85;transform:scale(1.04);filter:brightness(1.3)}
+.clock-label{font-family:var(--font-mono);font-size:6px;fill:var(--txt2);letter-spacing:.5px}
+.clock-time{font-family:var(--font-mono);font-size:4.5px;fill:var(--txtM)}
+
+/* ===== WEEKLY GRID — SVG PATH MORPHING ===== */
+.wk-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0}
+.wk-cell{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:12px 6px 10px;text-align:center;transition:all .35s cubic-bezier(.4,0,.2,1);cursor:default;position:relative;overflow:hidden}
+.wk-cell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,var(--amberGlow),transparent 70%);opacity:0;transition:opacity .4s}
+.wk-cell:hover{border-color:var(--amberD);transform:translateY(-4px);box-shadow:0 12px 32px #00000040}
+.wk-cell:hover::before{opacity:1}
+.wk-day{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--txtM);text-transform:uppercase;margin-bottom:8px;position:relative}
+.wk-icon{margin-bottom:6px;display:flex;justify-content:center;position:relative}
+.wk-icon svg{width:30px;height:30px;overflow:visible}
+/* Path morph transitions */
+.wk-icon svg *{transition:all .5s cubic-bezier(.4,0,.2,1)}
+/* Push: barbell lifts */
+.wk-cell:hover .morph-push-bar{transform:translateY(-2px)}
+.wk-cell:hover .morph-push-plate-l{transform:translateX(-2px) scale(1.15);transform-origin:6px 13px}
+.wk-cell:hover .morph-push-plate-r{transform:translateX(2px) scale(1.15);transform-origin:26px 13px}
+.wk-cell:hover .morph-push-tri{transform:translateY(-3px) scaleY(1.2);transform-origin:16px 4px}
+/* Pull: arrows expand */
+.wk-cell:hover .morph-pull-stem{transform:scaleY(1.1);transform-origin:16px 16px}
+.wk-cell:hover .morph-pull-top{transform:translateY(-3px) scaleX(1.2);transform-origin:16px 8px}
+.wk-cell:hover .morph-pull-bot{transform:translateY(3px) scaleX(1.2);transform-origin:16px 24px}
+.wk-cell:hover .morph-pull-core{transform:scale(1.5);transform-origin:16px 16px}
+/* Legs: rack expands */
+.wk-cell:hover .morph-leg-bar-l{transform:translateX(-2px);transform-origin:10px 16px}
+.wk-cell:hover .morph-leg-bar-r{transform:translateX(2px);transform-origin:22px 16px}
+.wk-cell:hover .morph-leg-plate{transform:scaleX(1.15);transform-origin:16px 16px}
+/* Arms: rings pulse */
+.wk-cell:hover .morph-arm-outer{transform:scale(1.12);transform-origin:16px 16px}
+.wk-cell:hover .morph-arm-inner{transform:scale(1.4);transform-origin:16px 16px}
+.wk-cell:hover .morph-arm-tick{opacity:.8;transform:scaleY(1.3);transform-origin:16px 16px}
+/* Badminton: figure stretches */
+.wk-cell:hover .morph-bad-body{transform:translateY(-1px);transform-origin:16px 16px}
+.wk-cell:hover .morph-bad-legs{transform:scaleY(1.1) translateY(1px);transform-origin:16px 22px}
+.wk-cell:hover .morph-bad-head{transform:scale(1.1) translateY(-2px);transform-origin:16px 10px}
+/* Rest: yin-yang rotates */
+.wk-cell:hover .morph-rest-outer{transform:rotate(180deg);transform-origin:16px 16px}
+.wk-cell:hover .morph-rest-fill{opacity:.5}
+.wk-cell:hover .morph-rest-dot{transform:scale(1.5);transform-origin:16px 16px}
+
+.wk-type{font-size:10px;font-weight:600;margin-bottom:4px;position:relative;transition:transform .3s}
+.wk-cell:hover .wk-type{transform:scale(1.05)}
+.wk-skin{font-family:var(--font-mono);font-size:7.5px;color:var(--txtM);padding:2px 6px;border-radius:4px;display:inline-block;margin-top:3px;position:relative}
+
+/* ===== CHECKLIST ===== */
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+.checklist-header h3{font-family:var(--font-display);font-size:18px;font-weight:600}
+.progress-ring-wrap{position:relative;width:48px;height:48px}
+.progress-ring{transform:rotate(-90deg)}
+.progress-ring circle{transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.progress-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--sage);font-weight:500}
+.progress-label{font-family:var(--font-mono);font-size:9px;color:var(--txtM);letter-spacing:1px;text-transform:uppercase}
+.progress-complete .progress-pct{color:var(--sageBright);animation:completePulse 1.5s ease infinite}
+@keyframes completePulse{0%,100%{text-shadow:0 0 0 transparent}50%{text-shadow:0 0 12px var(--checkGlow)}}
+/* Check items — enhanced hover + ripple */
+.check-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border:1px solid var(--bdr);border-radius:10px;margin-bottom:6px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);user-select:none;position:relative;overflow:hidden}
+.check-item::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--checkGlow),transparent 60%);opacity:0;transition:opacity .4s}
+.check-item::after{content:'';position:absolute;border-radius:50%;background:var(--checkGlow);width:0;height:0;top:50%;left:20px;transform:translate(-50%,-50%);transition:width .5s,height .5s,opacity .5s;opacity:0}
+.check-item.ripple::after{width:300px;height:300px;opacity:0;transition:width .6s,height .6s,opacity .8s}
+.check-item.done::before{opacity:1}
+.check-item:hover{border-color:var(--bdrA);transform:translateX(4px);box-shadow:0 4px 16px #00000020}
+.check-item.done{border-color:var(--sageD)}
+.check-item.done:hover{transform:translateX(4px)}
+.check-item.done .check-text{color:var(--txtM);text-decoration:line-through;text-decoration-color:var(--sageD)}
+.check-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative}
+.check-item:hover .check-box{border-color:var(--sage);transform:scale(1.08)}
+.check-item.done .check-box{background:var(--sage);border-color:var(--sage);box-shadow:0 0 14px var(--checkGlow);transform:scale(1)}
+.check-box svg{width:12px;height:12px;opacity:0;transform:scale(0) rotate(-45deg);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.check-item.done .check-box svg{opacity:1;transform:scale(1) rotate(0deg)}
+.check-text{font-size:12px;color:var(--txt2);transition:all .3s;position:relative;z-index:1}
+.check-time{font-family:var(--font-mono);font-size:9.5px;color:var(--amberD);min-width:44px;flex-shrink:0;position:relative;z-index:1;transition:color .2s}
+.check-item:hover .check-time{color:var(--amber)}
+.check-cat{font-family:var(--font-mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;flex-shrink:0;position:relative;z-index:1;transition:transform .2s}
+.check-item:hover .check-cat{transform:scale(1.05)}
+.reset-btn{font-family:var(--font-mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg2);color:var(--txtM);cursor:pointer;transition:all .25s}
+.reset-btn:hover{border-color:var(--rose);color:var(--rose);box-shadow:0 0 12px var(--roseD)}
+
+/* === DAY SELECTOR === */
+.ds{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.db{padding:7px 14px;border:1px solid var(--bdr);background:var(--bg2);color:var(--txt2);font-family:var(--font-body);font-size:11.5px;font-weight:500;cursor:pointer;border-radius:8px;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.db:hover{border-color:var(--amberD);color:var(--txt);transform:translateY(-2px);box-shadow:0 4px 12px #00000020}
+.db.a{background:linear-gradient(135deg,var(--amber),var(--amberB));color:var(--bg);border-color:var(--amber);font-weight:700;box-shadow:0 6px 20px var(--amberD)}
+.dtl{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;padding:5px 12px;border-radius:6px;margin-bottom:16px;display:inline-block}
+.ss{display:flex;gap:9px;align-items:baseline;padding:3px 0;font-size:11.5px;color:var(--txt2)}
+.ss .sn2{font-family:var(--font-mono);font-size:10px;color:var(--txtM);min-width:16px}
+.snt{font-size:10.5px;color:var(--sand);margin-top:5px;font-style:italic}
+.split{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.split>div{flex:1;min-width:200px}
+.split-label{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--txtM);margin-bottom:5px;text-transform:uppercase}
+footer{text-align:center;padding:28px 0;border-top:1px solid var(--bdr);margin-top:36px;position:relative}
+footer::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+footer p{font-size:9.5px;color:var(--txtM);font-family:var(--font-mono);letter-spacing:1.5px}
+/* ===== PILLAR CARDS ===== */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.pillar{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:14px 12px;text-align:center;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.4,0,.2,1);cursor:default}
+.pillar::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,var(--amberGlow),transparent 70%);opacity:0;transition:opacity .4s}
+.pillar:hover{border-color:var(--amberD);transform:translateY(-3px);box-shadow:0 10px 28px #00000035}
+.pillar:hover::before{opacity:1}
+.pillar-num{font-family:var(--font-display);font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--amber),var(--amberB));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px;position:relative;transition:transform .3s}
+.pillar:hover .pillar-num{transform:scale(1.12)}
+.pillar-icon{margin:6px 0 8px;display:flex;justify-content:center;position:relative}
+.pillar-icon svg{width:24px;height:24px;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.pillar:hover .pillar-icon svg{transform:scale(1.15);filter:drop-shadow(0 0 8px var(--amberD))}
+.pillar-text{font-size:10.5px;color:var(--txt2);font-weight:500;line-height:1.4;position:relative}
+.pillar:hover .pillar-text{color:var(--txt)}
+
+/* ===== COMMANDMENT RULES ===== */
+.cmd-rules{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.cmd{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.4,0,.2,1);cursor:default}
+.cmd::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--amberGlow),transparent);transition:width .4s}
+.cmd:hover{border-color:var(--amberD);transform:translateX(4px);box-shadow:0 4px 16px #00000020}
+.cmd:hover::before{width:100%}
+.cmd-num{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--amber);opacity:.5;min-width:24px;text-align:center;transition:all .3s;position:relative;z-index:1}
+.cmd:hover .cmd-num{opacity:1;transform:scale(1.15)}
+.cmd-divider{width:1px;height:20px;background:var(--bdr);flex-shrink:0;transition:background .3s;position:relative;z-index:1}
+.cmd:hover .cmd-divider{background:var(--amberD)}
+.cmd-text{font-size:11.5px;color:var(--txt2);position:relative;z-index:1;transition:color .2s}
+.cmd:hover .cmd-text{color:var(--txt)}
+.cmd-text strong{color:var(--txt);font-weight:600}
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor-dot{position:fixed;width:6px;height:6px;background:var(--amber);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;transition:transform .15s,opacity .2s;opacity:0}
+.cursor-ring{position:fixed;width:28px;height:28px;border:1px solid var(--amberD);border-radius:50%;pointer-events:none;z-index:9998;transition:width .25s,height .25s,border-color .25s,transform .08s;transform:translate(-50%,-50%);opacity:0}
+.cursor-dot.visible,.cursor-ring.visible{opacity:1}
+.cursor-ring.hover-expand{width:44px;height:44px;border-color:var(--amber)}
+.cursor-dot.hover-expand{transform:translate(-50%,-50%) scale(1.8);background:var(--amberB)}
+
+@media(max-width:640px){.c{padding:12px}.tb{font-size:10px;padding:8px}.nav-secondary .tb{font-size:9px;padding:6px 7px}.st{font-size:10.5px}.st th{font-size:8px;padding:5px}.st td{padding:5px}.wk-grid{grid-template-columns:repeat(4,1fr)}.clock-wrap svg{max-width:260px}.check-cat{display:none}.pillars{grid-template-columns:repeat(2,1fr)}.cursor-dot,.cursor-ring{display:none}}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="c">
+
+<header>
+<div class="ov">Performance Architecture</div>
+<h1>The <em>Superhuman</em> Protocol</h1>
+<p class="sub">Western chronobiology × TCM energetics. Growth maximised. Minimalist execution.</p>
+<div class="vtag">Complete Protocol — Live</div>
+</header>
+
+<div class="nav-primary">
+<button class="tb a" onclick="sw('circ')"><span class="ico">◐</span> Sleep</button>
+<button class="tb" onclick="sw('supp')"><span class="ico">◈</span> Supplements</button>
+<button class="tb" onclick="sw('grow')"><span class="ico">△</span> Growth</button>
+<button class="tb" onclick="sw('day')"><span class="ico">▣</span> Daily Protocol</button>
+</div>
+<div class="sec-label">Supporting Modules</div>
+<div class="nav-secondary">
+<button class="tb" onclick="sw('nutr')">Nutrition</button>
+<button class="tb" onclick="sw('phys')">Physical</button>
+<button class="tb" onclick="sw('neur')">Neuro</button>
+<button class="tb" onclick="sw('recv')">Recovery</button>
+<button class="tb" onclick="sw('skin')">Skincare</button>
+</div>
+
+<!-- ===== SLEEP ===== -->
+<div id="t-circ" class="tc a">
+<div class="mh"><div class="mt">Module 01</div><h2>Circadian & HGH Architecture</h2>
+<p>~75% of daily HGH fires during deep NREM — only if insulin is low. Every rule protects this window.</p></div>
+
+<div class="clock-wrap">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="cg" cx="50%" cy="50%"><stop offset="0%" stop-color="#141820"/><stop offset="100%" stop-color="#090b11"/></radialGradient></defs>
+<circle cx="100" cy="100" r="95" fill="none" stroke="#1e2430" stroke-width=".5"/>
+<circle cx="100" cy="100" r="75" fill="url(#cg)" stroke="#1e2430" stroke-width=".5"/>
+<circle cx="100" cy="100" r="55" fill="none" stroke="#1e243020" stroke-width=".3"/>
+<path d="M100,100 L100,25 A75,75 0 0,1 146,34 Z" fill="#b85a6a18" stroke="#b85a6a30" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L156,46 A75,75 0 0,1 175,100 Z" fill="#b8894418" stroke="#b8894430" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L175,100 A75,75 0 0,1 156,154 Z" fill="#b85a6a22" stroke="#b85a6a40" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L156,154 A75,75 0 0,1 100,175 Z" fill="#7a9e8218" stroke="#7a9e8230" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L100,175 A75,75 0 0,1 44,154 Z" fill="#5b7a9e18" stroke="#5b7a9e30" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L44,154 A75,75 0 0,1 25,100 Z" fill="#c4b89a18" stroke="#c4b89a30" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L25,100 A75,75 0 0,1 44,46 Z" fill="#b8894418" stroke="#b8894430" stroke-width=".3" class="clock-segment"/>
+<path d="M100,100 L44,46 A75,75 0 0,1 100,25 Z" fill="#1e243018" stroke="none" class="clock-segment"/>
+<text x="100" y="96" text-anchor="middle" fill="var(--txt)" font-family="var(--font-display)" font-size="9" font-weight="600">Organ Clock</text>
+<text x="100" y="108" text-anchor="middle" fill="var(--txt2)" font-family="var(--font-mono)" font-size="5" letter-spacing=".8">24-HOUR QI CYCLE</text>
+<text x="100" y="18" text-anchor="middle" class="clock-time">21:00</text>
+<text x="182" y="103" text-anchor="middle" class="clock-time">03:00</text>
+<text x="100" y="190" text-anchor="middle" class="clock-time">09:00</text>
+<text x="18" y="103" text-anchor="middle" class="clock-time">15:00</text>
+<text x="130" y="38" class="clock-label" transform="rotate(20,130,38)">WIND-DOWN</text>
+<text x="168" y="128" class="clock-label" transform="rotate(60,162,128)">HGH PULSE</text>
+<text x="140" y="168" class="clock-label" transform="rotate(-30,140,168)">IGF-1</text>
+<text x="72" y="172" class="clock-label">COLLAGEN</text>
+<text x="30" y="130" class="clock-label" transform="rotate(-60,36,130)">WAKE</text>
+<text x="38" y="64" class="clock-label">AM STACK</text>
+<path d="M 146 34 A 75 75 0 0 1 44 154" fill="none" stroke="var(--rose)" stroke-width="2" stroke-dasharray="4,3" opacity=".4"/>
+</svg>
+</div>
+
+<div class="sb sb-r"><h4>3 HGH Amplifiers</h4>
+<p><strong>1. Deep sleep + low insulin.</strong> Largest pulse 60–90 min after onset. Food within 2–3 hrs suppresses 75%.</p><br>
+<p><strong>2. Heavy compound calisthenics + sled VO2.</strong> Acute GH via lactate. <em>Opens Du Mai.</em></p><br>
+<p><strong>3. L-Citrulline + Glycine fasted before bed.</strong> Citrulline → GHRH. Glycine: GH + collagen.</p></div>
+
+<div class="cd"><div class="cl"><span class="d d-c"></span> <span style="color:var(--sage)">Key Windows</span></div>
+<div class="tl">
+<div class="tlb"><div class="tld"></div><div class="tlbl">19:30–20:00</div><div class="tlt">Last Meal — HGH Gate</div><div class="tldt">Insulin must clear. <strong>#1 rule.</strong></div></div>
+<div class="tlb"><div class="tld"></div><div class="tlbl">21:00–22:30</div><div class="tlt">Wind-Down</div><div class="tldt">Red/amber screen mode from 21:00. Full screens off 21:30. Evening stack fasted. Skincare begins.</div></div>
+<div class="tlb"><div class="tld"></div><div class="tlbl">23:00–01:00</div><div class="tlt">HGH Megapulse</div><div class="tldt">NREM 3–4. Primary pulse. Glymphatic clearance.</div></div>
+<div class="tlb"><div class="tld"></div><div class="tlbl">01:00–03:00</div><div class="tlt">Liver — IGF-1</div><div class="tldt">GH → IGF-1. Peak detox. Testosterone.</div></div>
+<div class="tlb"><div class="tld"></div><div class="tlbl">03:00–05:00</div><div class="tlt">Lung — Collagen</div><div class="tldt">Synthesis peaks. CICA active. Nasal NO.</div></div>
+<div class="tlb"><div class="tld"></div><div class="tlbl">07:00</div><div class="tlt">Wake</div><div class="tldt"><strong>10 min outdoor light.</strong> No phone for 30–60 min.</div></div>
+</div></div>
+
+<div class="pillars">
+<div class="pillar"><div class="pillar-num">I</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v3M12 18v3"/><rect x="6" y="6" width="12" height="12" rx="2" opacity=".4"/><path d="M9 10h6M9 14h4"/></svg></div><div class="pillar-text">Last meal by <strong style="color:var(--amberB)">20:00</strong></div></div>
+<div class="pillar"><div class="pillar-num">II</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div><div class="pillar-text">Morning light <strong style="color:var(--amberB)">10 min</strong></div></div>
+<div class="pillar"><div class="pillar-num">III</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0" opacity=".5"/></svg></div><div class="pillar-text">Caffeine before <strong style="color:var(--amberB)">13:00</strong></div></div>
+<div class="pillar"><div class="pillar-num">IV</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 3a4 4 0 0 0-4 4v1H6v12h12V8h-2V7a4 4 0 0 0-4-4z" opacity=".4"/><path d="M8 12l2 2 4-4"/></svg></div><div class="pillar-text">Bedroom <strong style="color:var(--amberB)">18–19°C</strong></div></div>
+<div class="pillar"><div class="pillar-num">V</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01" opacity=".5"/><line x1="8" y1="8" x2="16" y2="16" stroke-width="1.2" opacity=".6"/><line x1="16" y1="8" x2="8" y2="16" stroke-width="1.2" opacity=".6"/></svg></div><div class="pillar-text">Red mode til <strong style="color:var(--amberB)">21:30</strong> then off</div></div>
+<div class="pillar"><div class="pillar-num">VI</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 22c-4 0-7-2-7-5s3-5 7-5 7 2 7 5-3 5-7 5z" opacity=".3"/><ellipse cx="12" cy="9" rx="3" ry="4"/><path d="M9 9c0-1.5 1.5-3 3-3s3 1.5 3 3"/></svg></div><div class="pillar-text"><strong style="color:var(--amberB)">Nasal</strong> breathing</div></div>
+</div>
+</div>
+
+<!-- ===== SUPPLEMENTS ===== -->
+<div id="t-supp" class="tc">
+<div class="mh"><div class="mt">Module 06</div><h2>Supplement Stack</h2><p>Four tiers plus Novair Debloat.</p></div>
+<div class="tier" style="--tw:100%"><span class="tier-label" style="color:var(--sage)">Foundation</span><div class="tier-bar"><div class="tier-fill" style="background:linear-gradient(90deg,var(--sage),var(--sageBright))"></div></div><span class="tier-count">4 items</span></div>
+<div class="tier" style="--tw:75%"><span class="tier-label" style="color:var(--sageBright)">Growth</span><div class="tier-bar"><div class="tier-fill" style="background:linear-gradient(90deg,var(--sageBright),#b4d4b8)"></div></div><span class="tier-count">3 items</span></div>
+<div class="tier" style="--tw:100%"><span class="tier-label" style="color:var(--rose)">Performance</span><div class="tier-bar"><div class="tier-fill" style="background:linear-gradient(90deg,var(--rose),#d47a88)"></div></div><span class="tier-count">4 items</span></div>
+<div class="tier" style="--tw:50%"><span class="tier-label" style="color:var(--amber)">TCM Tonics</span><div class="tier-bar"><div class="tier-fill" style="background:linear-gradient(90deg,var(--amber),var(--amberB))"></div></div><span class="tier-count">2 optional</span></div>
+
+<div class="cd"><div class="cl"><span class="d d-n"></span> <span style="color:var(--sage)">Foundation</span></div>
+<table class="st"><thead><tr><th>Supplement</th><th>Dose</th><th>Key Role</th><th>TCM</th></tr></thead><tbody>
+<tr><td><span class="sn">D3 + K2</span></td><td><span class="sd">3–4K IU + 100µg</span> AM</td><td>Testosterone, GH receptors, Ca ↑30–40%.</td><td>Kidney Yang.</td></tr>
+<tr><td><span class="sn">Mg Glycinate</span></td><td><span class="sd">300–400mg</span> PM</td><td>Deep sleep (HGH). eNOS cofactor.</td><td>Liver Blood, Shen.</td></tr>
+<tr><td><span class="sn">Omega-3</span></td><td><span class="sd">2–3g</span> AM</td><td>Anti-inflammatory. GH→IGF-1.</td><td>Clears Damp-Heat.</td></tr>
+<tr><td><span class="sn">Zinc</span></td><td><span class="sd">15–25mg</span> dinner</td><td>Testosterone, GH, IGF-1.</td><td>Kidney Jing.</td></tr>
+</tbody></table></div>
+<div class="cd" style="border-color:var(--sageD)"><div class="cl"><span class="d d-t"></span> <span style="color:var(--sageBright)">Growth</span></div>
+<table class="st"><thead><tr><th>Supplement</th><th>Dose</th><th>Growth Role</th></tr></thead><tbody>
+<tr><td><span class="sn">Vitamin C</span></td><td><span class="sd">500mg×2</span></td><td>Rate-limiting collagen cofactor.</td></tr>
+<tr><td><span class="sn">Boron</span></td><td><span class="sd">3–6mg</span> AM</td><td>↓SHBG, amplifies D3, osteoblasts.</td></tr>
+<tr><td><span class="sn">Glycine</span></td><td><span class="sd">3g</span> PM</td><td>Collagen substrate. GH stimulator.</td></tr>
+</tbody></table></div>
+<div class="cd"><div class="cl"><span class="d d-s"></span> <span style="color:var(--rose)">Performance</span></div>
+<table class="st"><thead><tr><th>Supplement</th><th>Dose</th><th>NO</th><th>HGH</th></tr></thead><tbody>
+<tr><td><span class="sn">L-Citrulline</span></td><td><span class="sd">6–8g split</span></td><td>→eNOS→NO</td><td>PM fasted 40–60%↑</td></tr>
+<tr><td><span class="sn">Beetroot</span></td><td><span class="sd">5–10g</span> AM</td><td>Nitrate→NO</td><td>Blood flow→GH</td></tr>
+<tr><td><span class="sn">Creatine</span></td><td><span class="sd">5g</span> AM</td><td>—</td><td>↑Intensity→↑GH</td></tr>
+<tr><td><span class="sn">Apigenin</span></td><td><span class="sd">50mg</span> bed</td><td>—</td><td>Deep NREM</td></tr>
+</tbody></table></div>
+<div class="cd" style="border-color:var(--sageD)"><div class="cl"><span class="d d-t"></span> <span style="color:var(--sageBright)">Novair Debloat — AM</span></div>
+<p><strong>Dandelion</strong> (IGF-1), <strong>Horsetail</strong> (silica→collagen), <strong>Nettle</strong> (↓SHBG), <strong>Hibiscus</strong> (vasodilatory), <strong>Juniper</strong> (carminative). 1 scoop AM.</p></div>
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">TCM Tonics</span></div>
+<p><strong>Ashwagandha KSM-66</strong> (300–600mg PM) — cortisol ↓15–30%. <strong>Reishi</strong> (1–2g PM) — hepatoprotective. Cycle 5/2.</p></div>
+<div class="cmd-rules">
+<div class="cmd"><span class="cmd-num">1</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Foundation 4 weeks first.</strong> One addition per fortnight.</span></div>
+<div class="cmd"><span class="cmd-num">2</span><span class="cmd-divider"></span><span class="cmd-text"><strong>PM growth cocktail</strong> at 21:00 — fasted.</span></div>
+<div class="cmd"><span class="cmd-num">3</span><span class="cmd-divider"></span><span class="cmd-text"><strong>No antibacterial mouthwash.</strong> Kills NO pathway.</span></div>
+<div class="cmd"><span class="cmd-num">4</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Blood test 8 wks:</strong> D, Zn, Mg (RBC), T, IGF-1, BALP.</span></div>
+</div>
+</div>
+
+<!-- ===== GROWTH ===== -->
+<div id="t-grow" class="tc">
+<div class="mh"><div class="mt">Growth Audit</div><h2>Skeletal & Muscular Growth</h2><p>Growth plates close 18–25. Protocol maximises remaining potential.</p></div>
+<div class="sb sb-t"><h4>All Levers ✓</h4><p><strong>HGH · IGF-1 · Testosterone · Collagen · Bone · Blood Flow · Anti-Inflammation · Gut</strong> — all addressed.</p></div>
+<div class="cd"><div class="cl"><span class="d d-o"></span> <span style="color:var(--sand)">Behavioural</span></div>
+<p><strong>Axial loading</strong> — dips, pull-ups, squats. <strong>Decompression</strong> — dead hang daily. <strong>Posture</strong> — rows correct kyphosis (2–5 cm). <strong>Caloric surplus.</strong></p></div>
+<div class="fb"><div class="ft">Eggshell Ca</div><span class="r">≈43g eggshell per 500g bag</span> <span class="u">→ 600mg Ca/serving. AM with D3+K2.</span></div>
+</div>
+
+<!-- ===== NUTRITION ===== -->
+<div id="t-nutr" class="tc">
+<div class="mh"><div class="mt">Module 02</div><h2>Nutrition</h2></div>
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">5 Rules</span></div>
+<p><strong>1.</strong> Protein every meal, 1.6–2.2 g/kg/day. <strong>2.</strong> Largest meal AM/lunch. <strong>3.</strong> Warm, cooked default. <strong>4.</strong> Nothing 2.5 hrs before bed. <strong>5.</strong> No seed oils or ultra-processed.</p></div>
+<div class="cd"><div class="cl"><span class="d d-c"></span> <span style="color:var(--sage)">Thermal Map</span></div>
+<table class="st"><thead><tr><th>Nature</th><th>Foods</th><th>When</th></tr></thead><tbody>
+<tr><td><span class="sn">Warm</span></td><td>Lamb, beef, chicken, oats, sweet potato, ginger, beetroot</td><td>Default + post-train.</td></tr>
+<tr><td><span class="sn">Neutral</span></td><td>Rice, eggs, salmon, sardines, mushrooms, lentils</td><td>Bulk of diet.</td></tr>
+<tr><td><span class="sn">Cool</span></td><td>Tofu, cucumber, spinach, pear, green tea</td><td>Summer, acne flares.</td></tr>
+<tr><td><span class="sn" style="color:var(--rose)">Avoid</span></td><td>Deep-fried, alcohol, seed oils, refined sugar</td><td>Always.</td></tr>
+</tbody></table></div>
+</div>
+
+<!-- ===== PHYSICAL — PATH MORPHING ICONS ===== -->
+<div id="t-phys" class="tc">
+<div class="mh"><div class="mt">Module 03</div><h2>Physical — Russian-Style Calisthenics</h2><p>Weighted calisthenics + badminton + sled VO2.</p></div>
+
+<div class="wk-grid">
+<!-- MON: Push — barbell icon with morph classes -->
+<div class="wk-cell"><div class="wk-day">Mon</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<path class="morph-push-tri" d="M16 4l3 8h-6z" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="morph-push-bar" x1="8" y1="18" x2="24" y2="18" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<line class="morph-push-bar" x1="8" y1="18" x2="8" y2="14" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<line class="morph-push-bar" x1="24" y1="18" x2="24" y2="14" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="morph-push-plate-l" cx="6" cy="13" r="2" fill="none" stroke="var(--rose)" stroke-width="1.2"/>
+<circle class="morph-push-plate-r" cx="26" cy="13" r="2" fill="none" stroke="var(--rose)" stroke-width="1.2"/>
+</svg></div><div class="wk-type" style="color:var(--rose)">Push A</div><div class="wk-skin" style="background:var(--slateD)">Copper</div></div>
+
+<!-- TUE: Pull — arrow icon with morph -->
+<div class="wk-cell"><div class="wk-day">Tue</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<path class="morph-pull-stem" d="M16 6v20" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+<path class="morph-pull-top" d="M10 10l6-4 6 4" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="morph-pull-bot" d="M10 22l6 4 6-4" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="morph-pull-core" cx="16" cy="16" r="2.5" fill="none" stroke="var(--amberB)" stroke-width="1" opacity=".5"/>
+</svg></div><div class="wk-type" style="color:var(--amber)">Pull + VO2</div><div class="wk-skin" style="background:var(--sandD)">BHA</div></div>
+
+<!-- WED: Legs — rack icon with morph -->
+<div class="wk-cell"><div class="wk-day">Wed</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<path class="morph-leg-bar-l" d="M10 8v16" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"/>
+<path class="morph-leg-bar-r" d="M22 8v16" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"/>
+<path class="morph-leg-plate" d="M10 14h12" stroke="var(--sage)" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
+<path class="morph-leg-plate" d="M10 18h12" stroke="var(--sage)" stroke-width="1.2" stroke-linecap="round" opacity=".7"/>
+<circle cx="10" cy="8" r="2" fill="none" stroke="var(--sage)" stroke-width="1.2"/>
+<circle cx="22" cy="8" r="2" fill="none" stroke="var(--sage)" stroke-width="1.2"/>
+<circle cx="10" cy="24" r="2" fill="none" stroke="var(--sage)" stroke-width="1.2"/>
+<circle cx="22" cy="24" r="2" fill="none" stroke="var(--sage)" stroke-width="1.2"/>
+</svg></div><div class="wk-type" style="color:var(--sage)">Legs + Bad.</div><div class="wk-skin" style="background:var(--slateD)">Copper</div></div>
+
+<!-- THU: Arms — target icon with morph -->
+<div class="wk-cell"><div class="wk-day">Thu</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<circle class="morph-arm-outer" cx="16" cy="16" r="8" fill="none" stroke="var(--slate)" stroke-width="1.5"/>
+<circle class="morph-arm-inner" cx="16" cy="16" r="3" fill="none" stroke="var(--slate)" stroke-width="1" opacity=".5"/>
+<line class="morph-arm-tick" x1="16" y1="6" x2="16" y2="8" stroke="var(--slate)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+<line class="morph-arm-tick" x1="16" y1="24" x2="16" y2="26" stroke="var(--slate)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+<line class="morph-arm-tick" x1="6" y1="16" x2="8" y2="16" stroke="var(--slate)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+<line class="morph-arm-tick" x1="24" y1="16" x2="26" y2="16" stroke="var(--slate)" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+</svg></div><div class="wk-type" style="color:var(--slate)">Arms</div><div class="wk-skin" style="background:var(--sandD)">BHA</div></div>
+
+<!-- FRI: Push B — same barbell morph -->
+<div class="wk-cell"><div class="wk-day">Fri</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<path class="morph-push-tri" d="M16 4l3 8h-6z" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="morph-push-bar" x1="8" y1="18" x2="24" y2="18" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<line class="morph-push-bar" x1="8" y1="18" x2="8" y2="14" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<line class="morph-push-bar" x1="24" y1="18" x2="24" y2="14" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="morph-push-plate-l" cx="6" cy="13" r="2" fill="none" stroke="var(--rose)" stroke-width="1.2"/>
+<circle class="morph-push-plate-r" cx="26" cy="13" r="2" fill="none" stroke="var(--rose)" stroke-width="1.2"/>
+</svg></div><div class="wk-type" style="color:var(--rose)">Push B + Bad.</div><div class="wk-skin" style="background:var(--slateD)">Copper</div></div>
+
+<!-- SAT: Badminton — figure morph -->
+<div class="wk-cell"><div class="wk-day">Sat</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<circle class="morph-bad-head" cx="16" cy="10" r="3" fill="none" stroke="var(--sand)" stroke-width="1.3"/>
+<g class="morph-bad-body"><path d="M16 13v6" stroke="var(--sand)" stroke-width="1.2" stroke-linecap="round"/><path d="M12 17h8" stroke="var(--sand)" stroke-width="1.2" stroke-linecap="round"/></g>
+<g class="morph-bad-legs"><path d="M16 19l-3 5M16 19l3 5" stroke="var(--sand)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg></div><div class="wk-type" style="color:var(--sand)">Badminton</div><div class="wk-skin" style="background:var(--sandD)">BHA</div></div>
+
+<!-- SUN: Rest — yin-yang morph -->
+<div class="wk-cell"><div class="wk-day">Sun</div><div class="wk-icon"><svg viewBox="0 0 32 32">
+<g class="morph-rest-outer"><circle cx="16" cy="16" r="8" fill="none" stroke="var(--txtM)" stroke-width="1"/></g>
+<path class="morph-rest-fill" d="M16 8 A8 8 0 0 1 16 24 A4 4 0 0 0 16 16 A4 4 0 0 1 16 8" fill="var(--txtM)" opacity=".25"/>
+<circle class="morph-rest-dot" cx="16" cy="12" r="1.5" fill="var(--txtM)" opacity=".4"/>
+<circle class="morph-rest-dot" cx="16" cy="20" r="1.5" fill="var(--bg2)" stroke="var(--txtM)" stroke-width=".5" opacity=".4"/>
+</svg></div><div class="wk-type" style="color:var(--txtM)">Rest</div><div class="wk-skin" style="background:var(--sageD)">Rest</div></div>
+</div>
+
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">Sessions</span></div>
+<table class="st"><thead><tr><th>Day</th><th>Session</th><th>Movements</th><th>Notes</th></tr></thead><tbody>
+<tr><td><span class="sn">Mon</span></td><td><span class="sd">Push A</span></td><td><strong>W. Dips</strong> 4×6–10 · Chest Press 3×8–12 · Tricep</td><td>Clavicle density.</td></tr>
+<tr><td><span class="sn">Tue</span></td><td><span class="sd">Pull+VO2</span></td><td><strong>W. Pull-ups</strong> 4×5–8 · Rows 3×8–12 · <strong>Sled</strong></td><td>Peak GH session.</td></tr>
+<tr><td><span class="sn">Wed</span></td><td><span class="sd">Legs+Bad.</span></td><td><strong>Squat</strong> 4×6–10 · Leg Press · Extensions</td><td>King of axial loading.</td></tr>
+<tr><td><span class="sn">Thu</span></td><td><span class="sd">Arms</span></td><td>Curls · Hammers · Chin-ups · Preachers</td><td>CNS recovery.</td></tr>
+<tr><td><span class="sn">Fri</span></td><td><span class="sd">Push B+Bad.</span></td><td><strong>W. Dips</strong> 4×6–10 · Chest var. · Shoulders</td><td>2× dip freq.</td></tr>
+<tr><td><span class="sn">Sat</span></td><td><span class="sd">Badminton</span></td><td>Full session</td><td>Active recovery.</td></tr>
+<tr><td><span class="sn">Sun</span></td><td><span class="sd">Rest</span></td><td>Qi Gong + mobility</td><td><em>After Yang, Yin.</em></td></tr>
+</tbody></table></div>
+<div class="cmd-rules">
+<div class="cmd"><span class="cmd-num">1</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Progressive overload weekly</strong> on dips / pull-ups / squats.</span></div>
+<div class="cmd"><span class="cmd-num">2</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Train before 19:00.</strong> Late training impairs HGH.</span></div>
+<div class="cmd"><span class="cmd-num">3</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Dead hang 2–3 min daily.</strong> Spinal decompression + grip.</span></div>
+<div class="cmd"><span class="cmd-num">4</span><span class="cmd-divider"></span><span class="cmd-text"><strong>No cold within 4 hrs</strong> of heavy compounds.</span></div>
+<div class="cmd"><span class="cmd-num">5</span><span class="cmd-divider"></span><span class="cmd-text"><strong>AM: Ba Duan Jin 5 min.</strong> PM: Mobility 5 min.</span></div>
+</div>
+</div>
+
+<!-- ===== NEURO ===== -->
+<div id="t-neur" class="tc">
+<div class="mh"><div class="mt">Module 04</div><h2>Neuro & Shen</h2></div>
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">Dopamine</span></div>
+<p><strong>1.</strong> No phone 30–60 min after waking. <strong>2.</strong> Social media in blocks. <strong>3.</strong> Red/amber screen mode from 21:00 — full off by 21:30. <strong>4.</strong> Embrace boredom. <strong>5.</strong> AM cold 1–3 min → dopamine ↑200–300%.</p></div>
+<div class="cd"><div class="cl"><span class="d d-c"></span> <span style="color:var(--sage)">Breathwork</span></div>
+<p><strong>Physiological Sigh:</strong> Double inhale + slow exhale. <strong>Box Breathing:</strong> 4s×4, 4 min. <strong>Dantian Awareness:</strong> During PM skincare, 2 min.</p></div>
+</div>
+
+<!-- ===== RECOVERY ===== -->
+<div id="t-recv" class="tc">
+<div class="mh"><div class="mt">Module 05</div><h2>Recovery</h2></div>
+<div class="cd"><div class="cl"><span class="d d-b"></span> <span style="color:var(--slate)">Cold — AM Only</span></div>
+<p><strong>1–3 min cold finish.</strong> Not within 4 hrs of heavy compounds. Rewarm naturally.</p></div>
+<div class="cd"><div class="cl"><span class="d d-r"></span> <span style="color:var(--rose)">Heat — Evening 1–2x/Wk</span></div>
+<p>Sauna/bath 2–3 hrs before bed. GH ↑200–300%. HSPs protect muscle.</p></div>
+<div class="cd"><div class="cl"><span class="d d-n"></span> <span style="color:var(--sage)">Active</span></div>
+<p><strong>Dead hang 2–3 min. Foam roll 5 min. 10K steps.</strong></p></div>
+</div>
+
+<!-- ===== SKINCARE ===== -->
+<div id="t-skin" class="tc">
+<div class="mh"><div class="mt">Module 07</div><h2>Skincare</h2></div>
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">Products</span></div>
+<table class="st"><thead><tr><th>Product</th><th>Mechanism</th><th>When</th></tr></thead><tbody>
+<tr><td><span class="sn">Tołpa Wash</span></td><td>Gentle cleanser pH 5.5.</td><td>AM+PM</td></tr>
+<tr><td><span class="sn">Niacinamide</span></td><td>↓Sebum, ↑ceramides.</td><td>AM+PM</td></tr>
+<tr><td><span class="sn">Acne Killer</span></td><td>Anti-inflammatory.</td><td>AM</td></tr>
+<tr><td><span class="sn">Copper Peptides</span></td><td>GHK-Cu: collagen. No acids.</td><td>PM M/W/F</td></tr>
+<tr><td><span class="sn">Salicylic 2%</span></td><td>BHA — dissolves sebum.</td><td>PM T/Th/Sa</td></tr>
+<tr><td><span class="sn">CICA cream</span></td><td>Barrier repair. Active 03–05.</td><td>Every PM</td></tr>
+<tr><td><span class="sn">SPF 50</span></td><td>UV protection.</td><td>Every AM</td></tr>
+<tr><td><span class="sn">Scrub</span></td><td>Physical exfoliant.</td><td>Sun PM</td></tr>
+</tbody></table></div>
+</div>
+
+<!-- ===== DAILY PROTOCOL + CHECKLIST ===== -->
+<div id="t-day" class="tc">
+<div class="mh"><div class="mt">Complete Protocol</div><h2>Daily Protocol</h2><p>Check off each step. Resets at midnight.</p></div>
+<div class="ds">
+<button class="db a" onclick="sel('mon')">Mon</button>
+<button class="db" onclick="sel('tue')">Tue</button>
+<button class="db" onclick="sel('wed')">Wed</button>
+<button class="db" onclick="sel('thu')">Thu</button>
+<button class="db" onclick="sel('fri')">Fri</button>
+<button class="db" onclick="sel('sat')">Sat</button>
+<button class="db" onclick="sel('sun')">Sun</button>
+</div>
+<div id="dp"></div>
+</div>
+
+<footer><p>Superhuman Protocol — Complete. Western Biology × TCM Energetics.</p></footer>
+</div>
+
+<script>
+function sw(t){document.querySelectorAll('.tc').forEach(e=>{e.classList.remove('a');e.style.display='none'});document.querySelectorAll('.tb').forEach(e=>e.classList.remove('a'));const el=document.getElementById('t-'+t);el.style.display='block';requestAnimationFrame(()=>el.classList.add('a'));event.target.classList.add('a');if(t==='supp')setTimeout(()=>document.querySelectorAll('.tier').forEach(t=>t.classList.add('vis')),200)}
+
+const D={
+mon:{l:'Monday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Push A — Weighted Dips + Chest',cold:false},
+tue:{l:'Tuesday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Pull + Sled VO2 Max',cold:true},
+wed:{l:'Wednesday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Legs + Badminton',cold:false},
+thu:{l:'Thursday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Arms (Bicep Focus)',cold:true},
+fri:{l:'Friday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Push B + Badminton',cold:false},
+sat:{l:'Saturday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Badminton',cold:true},
+sun:{l:'Sunday',e:'rest',c:'var(--sage)',b:'var(--sageD)',t:'Rest Night',tr:'Complete Rest',cold:true}
+};
+const sA=['Tołpa Face Wash','BHL Toner','Acne & Redness Killer','Niacinamide 10%','Moisturize','SPF 50'];
+const sC=['Tołpa Face Wash','BHL Toner','Copper Peptides 1%','Wait 2 min','BHL Serum','Niacinamide 10%','CICA cream'];
+const sB=['Tołpa Face Wash','BHL Toner','Salicylic 2% (leave on)','Wait 10–15 min','Niacinamide 10%','CICA cream'];
+const sR=['Tołpa Face Wash','BHL Toner','Face Scrub','BHL Serum','Niacinamide 10%','CICA cream'];
+function gS(t){return t==='copper'?sC:t==='bha'?sB:sR}
+function gN(t){if(t==='copper')return'No acids tonight.';if(t==='bha')return'Leave BHA on. SPF tomorrow.';return'No actives. Barrier rebuilds.'}
+function rS(s){return s.map((x,i)=>`<div class="ss"><span class="sn2">${i+1}</span><span>${x}</span></div>`).join('')}
+const trD={mon:'<strong>W. Dips</strong> 4×6–10 · Chest Press 3×8–12 · Tricep · Dead hang',tue:'<strong>W. Pull-ups</strong> 4×5–8 · Rows 3×8–12 · <strong>Sled VO2</strong> · Dead hang',wed:'<strong>Squat</strong> 4×6–10 · Leg Press 3×10–12 · Extensions 3×12–15 · Badminton',thu:'Curls · Hammers · Chin-ups · Preachers',fri:'<strong>W. Dips</strong> 4×6–10 · Chest var. · Shoulders · Badminton',sat:'Full Badminton session',sun:'Qi Gong + mobility. <em>Growth happens today.</em>'};
+
+let checkState={};const today=new Date().toDateString();
+function getChecks(k){const key=today+'_'+k;if(!checkState[key])checkState[key]={};return checkState[key]}
+function toggleCheck(k,i){const c=getChecks(k);c[i]=!c[i];
+// Trigger ripple
+const el=document.querySelector(`[data-ci="${i}"]`);if(el){el.classList.remove('ripple');void el.offsetWidth;el.classList.add('ripple')}
+renderChecklist(k)}
+function resetChecks(k){checkState[today+'_'+k]={};renderChecklist(k)}
+
+const catColors={CIRCADIAN:'var(--sageD)',QIGONG:'var(--sageD)',RECOVERY:'var(--slateD)',NUTRITION:'var(--amberD)',SUPPS:'#7a9e8230',SKIN:'var(--amberD)',TRAINING:'var(--roseD)',HGH:'var(--roseD)',PMSTACK:'var(--slateD)',MOVEMENT:'var(--sageD)',SHEN:'var(--sageD)',SLEEP:'var(--roseD)'};
+
+function renderChecklist(k){
+const d=D[k],checks=getChecks(k),items=[];
+items.push({time:'07:00',text:'10 min outdoor light',cat:'CIRCADIAN'});
+items.push({time:'07:00',text:'Ba Duan Jin — 5 min',cat:'QIGONG'});
+if(d.cold)items.push({time:'07:15',text:'Cold shower 1–3 min',cat:'RECOVERY'});
+items.push({time:'07:30',text:'Shake: Protein+eggshell+beetroot+creatine+citrulline',cat:'NUTRITION'});
+items.push({time:'07:30',text:'D3+K2 · Omega-3 · Boron · Vit C 500mg',cat:'SUPPS'});
+items.push({time:'07:30',text:'Novair Debloat',cat:'SUPPS'});
+items.push({time:'07:45',text:'Skincare AM (6 steps)',cat:'SKIN'});
+items.push({time:'—',text:d.tr,cat:'TRAINING'});
+items.push({time:'13:00',text:'Caffeine curfew',cat:'CIRCADIAN'});
+items.push({time:'19:30',text:'Zinc 15–25mg with dinner',cat:'SUPPS'});
+items.push({time:'20:00',text:'HGH gate — nothing caloric',cat:'HGH'});
+items.push({time:'21:00',text:'Red/amber screen mode on',cat:'CIRCADIAN'});
+items.push({time:'21:00',text:'Mg Glycinate 300–400mg',cat:'PMSTACK'});
+items.push({time:'21:00',text:'L-Citrulline 3–4g fasted',cat:'PMSTACK'});
+items.push({time:'21:00',text:'Glycine 3g',cat:'PMSTACK'});
+items.push({time:'21:00',text:'Vitamin C 500mg',cat:'PMSTACK'});
+items.push({time:'21:00',text:'Apigenin 50mg',cat:'PMSTACK'});
+items.push({time:'21:00',text:'Skincare PM — '+d.t,cat:'SKIN'});
+items.push({time:'21:30',text:'All screens off',cat:'CIRCADIAN'});
+items.push({time:'21:15',text:'PM mobility 5 min',cat:'MOVEMENT'});
+items.push({time:'21:15',text:'Dantian breathing 2 min',cat:'SHEN'});
+items.push({time:'22:30',text:'Lights out · 18–19°C · nasal · wake 07:00',cat:'SLEEP'});
+const done=Object.keys(checks).filter(x=>checks[x]).length,total=items.length,pct=Math.round((done/total)*100);
+const circ=2*Math.PI*19,off=circ-(pct/100)*circ;
+let h=`<div class="dtl" style="background:${d.b};color:${d.c}">${d.l} — ${d.t}</div>
+<div class="checklist-header"><div style="display:flex;align-items:center;gap:12px">
+<div class="progress-ring-wrap${pct===100?' progress-complete':''}">
+<svg class="progress-ring" width="48" height="48"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--bdr)" stroke-width="3"/>
+<circle cx="24" cy="24" r="19" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${off}"/></svg>
+<div class="progress-pct">${pct}%</div></div>
+<div><div style="font-size:13px;font-weight:600">${done}/${total}</div><div class="progress-label">Completed</div></div>
+</div><button class="reset-btn" onclick="resetChecks('${k}')">Reset</button></div>`;
+items.forEach((it,i)=>{const dn=checks[i];
+h+=`<div class="check-item${dn?' done':''}" data-ci="${i}" onclick="toggleCheck('${k}',${i})">
+<span class="check-time">${it.time}</span>
+<div class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<span class="check-text">${it.text}</span>
+<span class="check-cat" style="background:${catColors[it.cat]||'var(--bdr)'}">${it.cat}</span></div>`});
+document.getElementById('dp').innerHTML=h}
+
+function sel(k){document.querySelectorAll('.db').forEach(b=>b.classList.remove('a'));event.target.classList.add('a');renderChecklist(k)}
+sel('mon');
+const now=new Date(),mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now;
+setTimeout(()=>{checkState={};const a=document.querySelector('.db.a');if(a)a.click()},mid);
+// ===== CUSTOM CURSOR =====
+(function(){
+if(window.matchMedia('(pointer:coarse)').matches||window.innerWidth<768)return;
+document.body.style.cursor='none';
+const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx-3+'px';dot.style.top=my-3+'px';if(!dot.classList.contains('visible')){dot.classList.add('visible');ring.classList.add('visible')}});
+function lerp(){rx+=(mx-rx)*.15;ry+=(my-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)}
+lerp();
+// Expand on interactive elements
+const hoverSel='button,.check-item,.wk-cell,.pillar,.cmd,.tb,.db,a,.tlb';
+document.addEventListener('mouseover',e=>{if(e.target.closest(hoverSel)){dot.classList.add('hover-expand');ring.classList.add('hover-expand');const el=e.target.closest(hoverSel);if(el)el.style.cursor='none'}});
+document.addEventListener('mouseout',e=>{if(e.target.closest(hoverSel)){dot.classList.remove('hover-expand');ring.classList.remove('hover-expand')}});
+document.addEventListener('mouseleave',()=>{dot.classList.remove('visible');ring.classList.remove('visible')});
+document.addEventListener('mouseenter',()=>{dot.classList.add('visible');ring.classList.add('visible')});
+// Nest all inner elements
+document.querySelectorAll(hoverSel).forEach(el=>{el.style.cursor='none'});
+const obs=new MutationObserver(()=>{document.querySelectorAll(hoverSel).forEach(el=>{el.style.cursor='none'})});
+obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+</body>
+</html>
