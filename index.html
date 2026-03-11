@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superhuman Protocol</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090b11;--bg2:#0f1219;--card:#141820;--cardH:#1a1f2a;--bdr:#1e2430;--bdrA:#b8894433;--amber:#b88944;--amberD:#b8894466;--amberB:#d4a85c;--amberGlow:#b8894418;--sage:#7a9e82;--sageD:#7a9e8244;--sageBright:#94b89c;--rose:#b85a6a;--roseD:#b85a6a33;--slate:#5b7a9e;--slateD:#5b7a9e33;--sand:#c4b89a;--sandD:#c4b89a33;--txt:#d8d0c4;--txt2:#948c80;--txtM:#5c564c;--check:#7a9e82;--checkGlow:#7a9e8240;--font-display:'Playfair Display',Georgia,serif;--font-body:'Sora',system-ui,sans-serif;--font-mono:'IBM Plex Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-body);background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 25% -5%,#b8894410 0%,transparent 55%),radial-gradient(ellipse at 75% 105%,#7a9e8208 0%,transparent 55%);pointer-events:none;z-index:0}
+.c{max-width:920px;margin:0 auto;padding:20px 22px 56px;position:relative;z-index:1}
+header{text-align:center;padding:56px 0 40px;border-bottom:1px solid var(--bdr);margin-bottom:28px;position:relative}
+header::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.hero-line{width:1px;height:36px;background:linear-gradient(180deg,transparent,var(--amber));margin:0 auto 16px}
+header .ov{font-family:var(--font-mono);font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--txtM);margin-bottom:18px}
+header h1{font-family:var(--font-display);font-size:clamp(32px,6vw,54px);font-weight:700;line-height:1.05;letter-spacing:-1px;margin-bottom:6px}
+header h1 em{font-style:italic;background:linear-gradient(135deg,var(--amber),var(--amberB));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header h1 span{display:block;font-size:.42em;font-weight:400;letter-spacing:8px;text-transform:uppercase;color:var(--txt2);margin-top:4px;font-family:var(--font-mono)}
+.hero-sub{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px auto 0;max-width:440px}
+.hero-sub-line{flex:1;height:1px;background:var(--bdr)}
+.hero-sub-text{font-size:11px;color:var(--txtM);font-family:var(--font-mono);letter-spacing:1.5px;white-space:nowrap}
+.vtag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;padding:4px 12px;border-radius:20px;background:var(--sageD);color:var(--sage);margin-top:16px;text-transform:uppercase}
+.vtag::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sage);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.nav-primary{display:flex;gap:3px;background:var(--bg2);border-radius:14px;padding:4px;margin-bottom:12px;border:1px solid var(--bdr)}
+.nav-secondary{display:flex;gap:3px;background:var(--bg2);border-radius:10px;padding:3px;margin-bottom:28px;border:1px solid var(--bdr);opacity:.8}
+.sec-label{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txtM);margin-bottom:5px;padding-left:6px}
+.tb{flex:1;padding:11px 12px;border:none;background:transparent;color:var(--txt2);font-family:var(--font-body);font-size:11.5px;font-weight:500;cursor:pointer;border-radius:10px;transition:color .2s,background .2s;white-space:nowrap}
+.tb:hover{color:var(--txt);background:var(--card)}.tb.a{background:var(--card);color:var(--amberB);box-shadow:0 2px 16px #00000050}
+.tb .ico{font-size:13px;margin-right:4px;vertical-align:-1px}
+.nav-secondary .tb{font-size:10.5px;padding:7px 10px;color:var(--txtM)}.nav-secondary .tb.a{color:var(--sageBright)}
+.tc{display:none}.tc.a{display:block}
+.mh{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--bdr);position:relative}
+.mh::after{content:'';position:absolute;bottom:-1px;left:0;width:40px;height:1px;background:var(--amber)}
+.mh .mt{font-family:var(--font-mono);font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:var(--amberD);margin-bottom:5px}
+.mh h2{font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:5px;letter-spacing:-.3px}
+.mh p{font-size:12.5px;color:var(--txt2);font-weight:300;max-width:650px}
+.cd{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:20px;margin-bottom:12px;overflow:hidden}.cd:hover{border-color:var(--bdrA)}
+.cl{font-family:var(--font-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.cd h3{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:7px}.cd p{font-size:12px;color:var(--txt2);line-height:1.7}
+.cd strong{color:var(--txt);font-weight:600}.cd em{color:var(--sageBright);font-style:normal;font-weight:500}
+.d{width:6px;height:6px;border-radius:50%;display:inline-block}.d-g{background:var(--amber)}.d-c{background:var(--sage)}.d-r{background:var(--rose)}.d-b{background:var(--slate)}.d-n{background:var(--sage)}.d-o{background:var(--sand)}.d-s{background:var(--rose)}.d-t{background:var(--sageBright)}
+.tl{position:relative}.tlb{position:relative;padding-left:32px;padding-bottom:16px;transition:all .25s}
+.tlb::before{content:'';position:absolute;left:9px;top:7px;bottom:0;width:1px;background:linear-gradient(180deg,var(--amberD),var(--bdr))}.tlb:last-child::before{display:none}
+.tlb .tld{position:absolute;left:3px;top:5px;width:13px;height:13px;border-radius:50%;border:2px solid var(--amber);background:var(--bg);transition:all .3s}
+.tlb:hover .tld{box-shadow:0 0 12px var(--amberD);transform:scale(1.2)}
+.tlb:hover .tlt{color:var(--amberB)}
+.tlb:hover .tldt{color:var(--txt)}
+.tlbl{font-family:var(--font-mono);font-size:11px;color:var(--amber);margin-bottom:2px}
+.tlt{font-family:var(--font-display);font-weight:600;font-size:13.5px;margin-bottom:2px;transition:color .25s}
+.tldt{font-size:11.5px;color:var(--txt2);line-height:1.6;transition:color .25s}.tldt .tc2{color:var(--sageBright);font-weight:500;font-size:10.5px}.tldt .bi{color:var(--amberB);font-weight:500;font-size:10.5px}
+.st{width:100%;border-collapse:collapse;margin-top:8px;font-size:11.5px}
+.st thead th{font-family:var(--font-mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txtM);text-align:left;padding:6px 8px;border-bottom:1px solid var(--bdr)}
+.st td{padding:8px;border-bottom:1px solid var(--bdr);vertical-align:top;color:var(--txt2);transition:all .2s}.st tr:last-child td{border-bottom:none}.st tbody tr:hover td{background:var(--cardH);color:var(--txt)}
+.sn{color:var(--txt);font-weight:600}.sd{font-family:var(--font-mono);font-size:10.5px;color:var(--amber)}
+.tier-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.tier-orb{flex:1;min-width:120px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:all .25s}
+.tier-orb:hover{border-color:var(--bdrA);transform:translateY(-2px);box-shadow:0 4px 16px #00000025}
+.tier-orb:hover .tier-dot{transform:scale(1.25);box-shadow:0 0 14px currentColor}
+.tier-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;position:relative;transition:all .3s}
+.tier-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid currentColor;opacity:.25}
+.tier-meta{display:flex;flex-direction:column;gap:1px}
+.tier-name{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500}
+.tier-ct{font-size:10px;color:var(--txtM)}
+.supp-edicts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.supp-edict{position:relative;background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:18px 16px 16px;overflow:hidden;transition:all .25s}
+.supp-edict:hover{border-color:var(--amberD);transform:translateY(-2px);box-shadow:0 6px 20px #00000030}
+.supp-edict:hover .se-glyph{opacity:1;transform:scale(1.1)}
+.se-glyph{position:absolute;top:10px;right:12px;font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--amberD);opacity:.3;line-height:1;transition:all .35s;pointer-events:none}
+.se-title{font-family:var(--font-display);font-size:13.5px;font-weight:600;margin-bottom:4px;padding-right:28px}
+.se-sub{font-size:10.5px;color:var(--txt2);line-height:1.55}
+.se-sub em{color:var(--sageBright);font-style:normal;font-weight:500}
+.se-line{width:24px;height:1px;background:var(--amberD);margin:8px 0}
+.fb{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:16px;margin:12px 0;font-family:var(--font-mono);font-size:11.5px;color:var(--txt2);line-height:2}
+.fb .ft{font-family:var(--font-body);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--amberD);margin-bottom:6px;font-weight:600}
+.fb .v{color:var(--amberB);font-weight:500}.fb .u{color:var(--txtM)}.fb .r{color:var(--sage);font-weight:500}
+.fb .nt{font-family:var(--font-body);font-size:10.5px;color:var(--txtM);margin-top:5px;font-style:italic}
+.rb{background:var(--bg2);border:1px solid var(--amberD);border-left:3px solid var(--amber);border-radius:8px;padding:14px 16px;margin:16px 0}
+.rb h4{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:7px}
+.rb ul{list-style:none;padding:0}.rb li{font-size:11.5px;color:var(--txt2);padding:2px 0 2px 14px;position:relative}.rb li::before{content:'›';position:absolute;left:0;color:var(--amberD);font-weight:700}.rb li strong{color:var(--txt)}
+.sb{background:var(--bg2);border-left:3px solid;border-radius:8px;padding:14px 16px;margin:12px 0;overflow:hidden}
+.sb h4{font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
+.sb p{font-size:12px;color:var(--txt2);line-height:1.65}.sb strong{color:var(--txt)}.sb em{color:var(--sageBright);font-style:normal;font-weight:500}
+.sb-r{border-color:var(--rose);border:1px solid var(--roseD);border-left:3px solid var(--rose)}.sb-r h4{color:var(--rose)}
+.sb-t{border-color:var(--sage);border:1px solid var(--sageD);border-left:3px solid var(--sage)}.sb-t h4{color:var(--sage)}
+.sb-b{border-color:var(--slate);border:1px solid var(--slateD);border-left:3px solid var(--slate)}.sb-b h4{color:var(--slate)}
+.sb-o{border-color:var(--sand);border:1px solid var(--sandD);border-left:3px solid var(--sand)}.sb-o h4{color:var(--sand)}
+.clock-wrap{display:flex;justify-content:center;margin:20px 0}.clock-wrap svg{max-width:320px;width:100%}
+.clock-label{font-family:var(--font-mono);font-size:6px;fill:var(--txt2);letter-spacing:.5px}.clock-time{font-family:var(--font-mono);font-size:4.5px;fill:var(--txtM)}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.pillar{background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:14px 12px;text-align:center;transition:all .25s}
+.pillar:hover{border-color:var(--amberD);transform:translateY(-2px);box-shadow:0 4px 16px #00000025}.pillar:hover .pillar-num{filter:brightness(1.3)}
+.pillar-num{font-family:var(--font-display);font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--amber),var(--amberB));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px}
+.pillar-icon{margin:6px 0 8px;display:flex;justify-content:center}.pillar-icon svg{width:24px;height:24px}
+.pillar-text{font-size:10.5px;color:var(--txt2);font-weight:500;line-height:1.4}
+.cmd-rules{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.cmd{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;transition:all .25s}
+.cmd:hover{border-color:var(--amberD);background:var(--card)}.cmd:hover .cmd-num{opacity:1;text-shadow:0 0 12px var(--amberD)}
+.cmd-num{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--amber);opacity:.5;min-width:24px;text-align:center;transition:all .25s}
+.cmd-divider{width:1px;height:20px;background:var(--bdr);flex-shrink:0}.cmd-text{font-size:11.5px;color:var(--txt2);transition:color .25s}.cmd-text strong{color:var(--txt)}
+.cmd:hover .cmd-text{color:var(--txt)}
+.recv-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:20px;margin-bottom:12px;overflow:hidden}.recv-card:hover{border-color:var(--bdrA)}
+.recv-header{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.recv-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;overflow:hidden}
+.recv-icon::before{content:'';position:absolute;inset:0;opacity:.12;border-radius:10px}.recv-icon svg{width:22px;height:22px;position:relative;z-index:1}
+.recv-title{font-family:var(--font-display);font-size:17px;font-weight:600}
+.recv-badge{font-family:var(--font-mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-left:auto}
+.recv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:12px}
+.recv-stat{background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;text-align:center;transition:all .25s}
+.recv-stat:hover{border-color:var(--amberD);transform:translateY(-2px);box-shadow:0 4px 16px #00000030}
+.recv-stat-val{font-family:var(--font-display);font-size:20px;font-weight:700;line-height:1}.recv-stat-label{font-size:9.5px;color:var(--txtM);margin-top:4px}
+.body-map{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin:16px 0}.body-svg-wrap{flex-shrink:0;width:180px}
+.body-zone{cursor:pointer;transition:opacity .3s,filter .3s}.body-zone:hover,.body-zone.active{opacity:1!important;filter:brightness(1.6)}.body-zone.active{filter:brightness(1.8) drop-shadow(0 0 8px var(--amber))}
+.body-info{flex:1;min-width:240px}.body-info-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px}.body-info-card h4{font-family:var(--font-display);font-size:16px;margin-bottom:6px}
+.growth-stat{display:flex;gap:8px;align-items:center;padding:6px 8px;font-size:11px;border-radius:6px;transition:all .25s;margin:2px -8px}
+.growth-stat:hover{background:var(--bg2)}.growth-stat:hover .growth-stat-dot{box-shadow:0 0 8px currentColor;transform:scale(1.3)}.growth-stat:hover .growth-stat-label{color:var(--txt)}
+.growth-stat-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;transition:all .25s}.growth-stat-label{color:var(--txt2);flex:1;transition:color .2s}.growth-stat-value{font-family:var(--font-mono);font-size:10px;color:var(--amber)}
+.skin-item{background:var(--card);border:1px solid var(--bdr);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.skin-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none;transition:background .2s}.skin-header:hover{background:var(--cardH)}
+.skin-header:hover .skin-dot{box-shadow:0 0 10px currentColor;transform:scale(1.3)}
+.skin-name{font-size:12.5px;font-weight:600;flex:1;transition:color .2s}.skin-header:hover .skin-name{color:var(--amberB)}.skin-when{font-family:var(--font-mono);font-size:9px;color:var(--txtM);letter-spacing:1px;text-transform:uppercase;padding:2px 8px;background:var(--bg2);border-radius:4px}
+.skin-arrow{width:16px;height:16px;transition:transform .3s;color:var(--txtM)}.skin-item.open .skin-arrow{transform:rotate(180deg);color:var(--amber)}
+.skin-body{max-height:0;overflow:hidden;transition:max-height .4s}.skin-item.open .skin-body{max-height:200px}
+.skin-desc{padding:0 16px 14px;font-size:11.5px;color:var(--txt2);line-height:1.65;border-top:1px solid var(--bdr);margin:0 16px;padding-top:12px}.skin-desc em{color:var(--sageBright);font-style:normal;font-weight:500}
+.skin-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:all .25s}
+.el-phase{margin-bottom:14px}.el-phase-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;padding:6px 0}
+.el-symbol{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.el-symbol svg{width:20px;height:20px;position:relative;z-index:1}.el-symbol::before{content:'';position:absolute;inset:0;opacity:.15;border-radius:10px}
+.el-name{font-family:var(--font-display);font-size:15px;font-weight:600}.el-time-range{font-family:var(--font-mono);font-size:9px;color:var(--txtM);letter-spacing:1.5px;margin-left:auto}
+.el-dawn .el-symbol::before{background:var(--sand)}.el-dawn .el-symbol{border:1px solid var(--sandD)}
+.el-forge .el-symbol::before{background:var(--rose)}.el-forge .el-symbol{border:1px solid var(--roseD)}
+.el-tide .el-symbol::before{background:var(--slate)}.el-tide .el-symbol{border:1px solid var(--slateD)}
+.el-aether .el-symbol::before{background:var(--amber)}.el-aether .el-symbol{border:1px solid var(--amberD)}
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+.progress-ring-wrap{position:relative;width:48px;height:48px}.progress-ring{transform:rotate(-90deg)}.progress-ring circle{transition:stroke-dashoffset .6s}
+.progress-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--sage);font-weight:500}
+.progress-label{font-family:var(--font-mono);font-size:9px;color:var(--txtM);letter-spacing:1px;text-transform:uppercase}
+.check-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--card);border:1px solid var(--bdr);border-radius:8px;margin-bottom:4px;cursor:pointer;transition:border-color .2s;user-select:none;position:relative;overflow:hidden}
+.check-item::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--checkGlow),transparent 60%);opacity:0;transition:opacity .3s}.check-item.done::before{opacity:1}
+.check-item:hover{border-color:var(--bdrA)}.check-item.done{border-color:var(--sageD)}.check-item.done .check-text{color:var(--txtM);text-decoration:line-through;text-decoration-color:var(--sageD)}
+.check-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s}
+.check-item.done .check-box{background:var(--sage);border-color:var(--sage);box-shadow:0 0 10px var(--checkGlow)}
+.check-box svg{width:12px;height:12px;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1)}.check-item.done .check-box svg{opacity:1;transform:scale(1)}
+.check-text{font-size:12px;color:var(--txt2);position:relative;z-index:1}.check-time{font-family:var(--font-mono);font-size:9.5px;color:var(--amberD);min-width:44px;flex-shrink:0;position:relative;z-index:1}
+.check-cat{font-family:var(--font-mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;flex-shrink:0;position:relative;z-index:1}
+.reset-btn{font-family:var(--font-mono);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg2);color:var(--txtM);cursor:pointer;transition:color .2s,border-color .2s}.reset-btn:hover{border-color:var(--rose);color:var(--rose)}
+.ds{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.db{padding:7px 14px;border:1px solid var(--bdr);background:var(--bg2);color:var(--txt2);font-family:var(--font-body);font-size:11.5px;font-weight:500;cursor:pointer;border-radius:8px;transition:all .2s}.db:hover{border-color:var(--amberD);color:var(--txt)}
+.db.a{background:linear-gradient(135deg,var(--amber),var(--amberB));color:var(--bg);border-color:var(--amber);font-weight:700;box-shadow:0 4px 16px var(--amberD)}
+.neuro-hub{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.neuro-node{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;position:relative;overflow:hidden;transition:all .3s}
+.neuro-node:hover{border-color:var(--bdrA);transform:translateY(-2px);box-shadow:0 6px 24px #00000030}
+.neuro-node:hover .nn-icon{transform:scale(1.15);filter:brightness(1.4)}
+.neuro-node:hover .nn-title{color:var(--amberB)}
+.nn-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.nn-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.nn-icon svg{width:18px;height:18px}
+.nn-title{font-family:var(--font-display);font-size:14px;font-weight:600;transition:color .25s}
+.nn-val{font-family:var(--font-mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:4px;margin-left:auto}
+.nn-body{font-size:11px;color:var(--txt2);line-height:1.6}
+.nn-body em{color:var(--sageBright);font-style:normal;font-weight:500}
+.nn-body strong{color:var(--txt);font-weight:600}
+.neuro-wide{grid-column:1/-1}
+.nn-pulse{position:absolute;top:12px;right:12px;width:8px;height:8px;border-radius:50%;opacity:.5}
+.nn-pulse::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid currentColor;opacity:.3;animation:pulse 2.5s infinite}
+.face-map{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin:16px 0}
+.face-svg-wrap{flex-shrink:0;width:200px;position:relative}
+.face-svg-wrap svg{width:100%;height:auto}
+.face-zone{cursor:pointer;transition:all .35s}.face-zone:hover{filter:brightness(1.5)}.face-zone.fz-active{filter:brightness(1.8) drop-shadow(0 0 6px var(--amber))}
+.face-info{flex:1;min-width:240px}
+.face-info-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:18px;transition:all .3s}
+.face-info-card h4{font-family:var(--font-display);font-size:17px;margin-bottom:4px}
+.face-info-card .fi-sub{font-size:10.5px;color:var(--txtM);margin-bottom:12px;font-family:var(--font-mono);letter-spacing:1px}
+.fi-product{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.fi-product:last-child{border-bottom:none}
+.fi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;transition:all .25s}
+.fi-product:hover .fi-dot{box-shadow:0 0 8px currentColor;transform:scale(1.3)}
+.fi-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.fi-reason{font-size:10.5px;color:var(--txt2);line-height:1.55}
+.fi-reason em{color:var(--sageBright);font-style:normal;font-weight:500}
+.skin-rotation{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0}
+.skin-rot-card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:14px;text-align:center;transition:all .25s}
+.skin-rot-card:hover{border-color:var(--bdrA);transform:translateY(-2px)}
+.skin-rot-days{font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;color:var(--txtM);margin-bottom:6px}
+.skin-rot-type{font-family:var(--font-display);font-size:15px;font-weight:600;margin-bottom:4px}
+/* Live clock */
+.live-clock{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px}
+.lc-time{font-family:var(--font-mono);font-size:14px;color:var(--amber);letter-spacing:2px;font-weight:500}
+.lc-sep{width:3px;height:3px;border-radius:50%;background:var(--bdr)}
+.lc-organ{font-family:var(--font-mono);font-size:9px;color:var(--txtM);letter-spacing:1px}
+.lc-organ em{color:var(--sageBright);font-style:normal}
+/* Streak */
+.streak-wrap{display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--bg2);border:1px solid var(--bdr);border-radius:8px}
+.streak-flame{font-size:16px;line-height:1}
+.streak-num{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--amber);line-height:1}
+.streak-label{font-family:var(--font-mono);font-size:8px;color:var(--txtM);letter-spacing:1.5px;text-transform:uppercase}
+.streak-wrap.s-active{border-color:var(--amberD);box-shadow:0 0 12px var(--amberGlow)}
+/* AM/PM toggle */
+.skin-toggle{display:flex;gap:4px;margin-bottom:12px}
+.skin-tog-btn{padding:6px 16px;border:1px solid var(--bdr);background:var(--bg2);color:var(--txtM);font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;cursor:pointer;border-radius:6px;transition:all .2s}
+.skin-tog-btn:hover{color:var(--txt);border-color:var(--amberD)}
+.skin-tog-btn.stb-a{background:var(--card);color:var(--amberB);border-color:var(--amberD)}
+/* Supp timeline */
+.supp-tl{position:relative;background:var(--bg2);border:1px solid var(--bdr);border-radius:10px;padding:18px 16px 14px;margin:16px 0}
+.supp-tl-title{font-family:var(--font-mono);font-size:8.5px;letter-spacing:2px;color:var(--txtM);text-transform:uppercase;margin-bottom:14px}
+.supp-tl-track{position:relative;height:6px;background:var(--bdr);border-radius:3px;margin:0 0 8px}
+.supp-tl-fill{position:absolute;top:0;left:0;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),var(--amber),var(--slate));opacity:.3}
+.supp-tl-dot{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);cursor:pointer;transition:all .25s;z-index:2}
+.supp-tl-dot:hover{transform:translate(-50%,-50%) scale(1.5);box-shadow:0 0 10px currentColor}
+.supp-tl-dot::after{content:attr(data-label);position:absolute;top:12px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;color:var(--txtM);white-space:nowrap;letter-spacing:.5px;opacity:0;transition:opacity .2s}
+.supp-tl-dot:hover::after{opacity:1}
+.supp-tl-labels{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:8px;color:var(--txtM);letter-spacing:1px}
+.supp-tl-clusters{display:flex;justify-content:space-between;margin-top:10px;gap:8px}
+.supp-tl-cluster{text-align:center;flex:1}
+.stlc-time{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--amberB);line-height:1}
+.stlc-label{font-family:var(--font-mono);font-size:7.5px;color:var(--txtM);letter-spacing:1px;margin-top:3px}
+.stlc-items{font-size:9.5px;color:var(--txt2);margin-top:4px;line-height:1.5}
+.skin-rot-desc{font-size:10px;color:var(--txt2);line-height:1.5}
+/* Shop buttons */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:16px 0}
+.shop-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--card);border:1px solid var(--bdr);border-radius:10px;text-decoration:none;color:var(--txt);transition:all .25s;overflow:hidden;position:relative}
+.shop-btn:hover{border-color:var(--amberD);transform:translateY(-1px);box-shadow:0 4px 16px #00000025}
+.shop-btn:hover .shop-arrow{opacity:1;transform:translateX(0)}
+.shop-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:all .25s}
+.shop-btn:hover .shop-dot{box-shadow:0 0 8px currentColor;transform:scale(1.3)}
+.shop-name{font-size:11px;font-weight:600;flex:1;line-height:1.3}
+.shop-store{font-family:var(--font-mono);font-size:7.5px;letter-spacing:1px;color:var(--txtM);text-transform:uppercase}
+.shop-arrow{font-size:12px;color:var(--amber);opacity:0;transform:translateX(-4px);transition:all .25s}
+.shop-section{margin:20px 0}
+.shop-section-title{font-family:var(--font-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txtM);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.shop-section-title::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.dtl{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;padding:5px 12px;border-radius:6px;margin-bottom:14px;display:inline-block}
+.cursor-dot{position:fixed;width:6px;height:6px;background:var(--amber);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen;transition:transform .15s;opacity:0}
+.cursor-ring{position:fixed;width:28px;height:28px;border:1px solid var(--amberD);border-radius:50%;pointer-events:none;z-index:9998;transition:width .25s,height .25s,border-color .25s;transform:translate(-50%,-50%);opacity:0}
+.cursor-dot.visible,.cursor-ring.visible{opacity:1}.cursor-ring.hover-expand{width:44px;height:44px;border-color:var(--amber)}.cursor-dot.hover-expand{transform:translate(-50%,-50%) scale(1.8);background:var(--amberB)}
+footer{text-align:center;padding:28px 0;border-top:1px solid var(--bdr);margin-top:36px;position:relative}
+footer::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+footer p{font-size:9.5px;color:var(--txtM);font-family:var(--font-mono);letter-spacing:1.5px}
+@media(max-width:640px){.c{padding:12px}.tb{font-size:10px;padding:8px}.nav-secondary .tb{font-size:9px;padding:6px 7px}.st{font-size:10.5px}.st th{font-size:8px;padding:5px}.st td{padding:5px}.clock-wrap svg{max-width:260px}.check-cat{display:none}.pillars{grid-template-columns:repeat(2,1fr)}.cursor-dot,.cursor-ring{display:none}.body-map{flex-direction:column;align-items:center}.body-svg-wrap{width:140px}.recv-grid{grid-template-columns:1fr}.tier-row{grid-template-columns:1fr 1fr;display:grid}.supp-edicts{grid-template-columns:1fr}.neuro-hub{grid-template-columns:1fr}.neuro-wide{grid-column:1}.neuro-wide .nn-body{grid-template-columns:1fr!important}.face-map{flex-direction:column;align-items:center}.face-svg-wrap{width:160px}.skin-rotation{grid-template-columns:1fr}.shop-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div><div class="cursor-ring" id="cursorRing"></div>
+<div class="c">
+<header>
+<div class="hero-line"></div>
+<div class="ov">Performance Architecture</div>
+<h1>The <em>Superhuman</em><span>Protocol</span></h1>
+<div class="hero-sub"><div class="hero-sub-line"></div><span class="hero-sub-text">Biology × TCM</span><div class="hero-sub-line"></div></div>
+<div class="vtag">Complete Protocol — Live</div>
+<div class="live-clock"><span class="lc-time" id="lcTime">--:--</span><span class="lc-sep"></span><span class="lc-organ" id="lcOrgan"></span></div>
+</header>
+<div class="nav-primary"><button class="tb a" onclick="sw('circ')"><span class="ico">◐</span> Sleep</button><button class="tb" onclick="sw('supp')"><span class="ico">◈</span> Supplements</button><button class="tb" onclick="sw('grow')"><span class="ico">△</span> Growth</button><button class="tb" onclick="sw('day')"><span class="ico">▣</span> Daily Protocol</button></div>
+<div class="sec-label">Supporting Modules</div>
+<div class="nav-secondary"><button class="tb" onclick="sw('nutr')">Nutrition</button><button class="tb" onclick="sw('phys')">Physical</button><button class="tb" onclick="sw('neur')">Neuro</button><button class="tb" onclick="sw('recv')">Recovery</button><button class="tb" onclick="sw('skin')">Skincare</button></div>
+
+<!-- SLEEP --><div id="t-circ" class="tc a"><div class="mh"><div class="mt">Module 01</div><h2>Circadian & HGH Architecture</h2><p>~75% of daily HGH fires during deep NREM — only if insulin is low.</p></div><div class="clock-wrap"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="cg" cx="50%" cy="50%"><stop offset="0%" stop-color="#141820"/><stop offset="100%" stop-color="#090b11"/></radialGradient></defs><circle cx="100" cy="100" r="95" fill="none" stroke="#1e2430" stroke-width=".5"/><circle cx="100" cy="100" r="75" fill="url(#cg)" stroke="#1e2430" stroke-width=".5"/><path d="M100,100 L100,25 A75,75 0 0,1 146,34 Z" fill="#b85a6a18" stroke="#b85a6a30" stroke-width=".3"/><path d="M100,100 L156,46 A75,75 0 0,1 175,100 Z" fill="#b8894418" stroke="#b8894430" stroke-width=".3"/><path d="M100,100 L175,100 A75,75 0 0,1 156,154 Z" fill="#b85a6a22" stroke="#b85a6a40" stroke-width=".3"/><path d="M100,100 L156,154 A75,75 0 0,1 100,175 Z" fill="#7a9e8218" stroke="#7a9e8230" stroke-width=".3"/><path d="M100,100 L100,175 A75,75 0 0,1 44,154 Z" fill="#5b7a9e18" stroke="#5b7a9e30" stroke-width=".3"/><path d="M100,100 L44,154 A75,75 0 0,1 25,100 Z" fill="#c4b89a18" stroke="#c4b89a30" stroke-width=".3"/><path d="M100,100 L25,100 A75,75 0 0,1 44,46 Z" fill="#b8894418" stroke="#b8894430" stroke-width=".3"/><text x="100" y="96" text-anchor="middle" fill="var(--txt)" font-family="var(--font-display)" font-size="9" font-weight="600">Organ Clock</text><text x="100" y="108" text-anchor="middle" fill="var(--txt2)" font-family="var(--font-mono)" font-size="5" letter-spacing=".8">24-HOUR QI CYCLE</text><text x="100" y="18" text-anchor="middle" class="clock-time">21:00</text><text x="182" y="103" text-anchor="middle" class="clock-time">03:00</text><text x="100" y="190" text-anchor="middle" class="clock-time">09:00</text><text x="18" y="103" text-anchor="middle" class="clock-time">15:00</text><text x="130" y="38" class="clock-label" transform="rotate(20,130,38)">WIND-DOWN</text><text x="168" y="128" class="clock-label" transform="rotate(60,162,128)">HGH PULSE</text><text x="140" y="168" class="clock-label" transform="rotate(-30,140,168)">IGF-1</text><text x="72" y="172" class="clock-label">COLLAGEN</text><text x="30" y="130" class="clock-label" transform="rotate(-60,36,130)">WAKE</text><text x="38" y="64" class="clock-label">AM STACK</text><path d="M 146 34 A 75 75 0 0 1 44 154" fill="none" stroke="var(--rose)" stroke-width="2" stroke-dasharray="4,3" opacity=".4"/></svg></div>
+<div class="sb sb-r"><h4>3 HGH Amplifiers</h4><p><strong>1. Deep sleep + low insulin.</strong> Food within 2–3 hrs suppresses pulse 75%.</p><br><p><strong>2. Heavy compound calisthenics + sled VO2.</strong> Acute GH via lactate.</p><br><p><strong>3. L-Citrulline + Glycine fasted before bed.</strong></p></div>
+<div class="cd"><div class="cl"><span class="d d-c"></span> <span style="color:var(--sage)">Key Windows</span></div><div class="tl"><div class="tlb"><div class="tld"></div><div class="tlbl">19:30–20:00</div><div class="tlt">Last Meal — HGH Gate</div><div class="tldt">Insulin must clear. <strong>#1 rule.</strong></div></div><div class="tlb"><div class="tld"></div><div class="tlbl">21:00–22:30</div><div class="tlt">Wind-Down</div><div class="tldt">Red/amber screens from 21:00. Off 21:30. Evening stack fasted.</div></div><div class="tlb"><div class="tld"></div><div class="tlbl">23:00–01:00</div><div class="tlt">HGH Megapulse</div><div class="tldt">NREM 3–4. Primary pulse. Glymphatic clearance.</div></div><div class="tlb"><div class="tld"></div><div class="tlbl">01:00–03:00</div><div class="tlt">Liver — IGF-1</div><div class="tldt">GH → IGF-1. Peak detox. Testosterone.</div></div><div class="tlb"><div class="tld"></div><div class="tlbl">03:00–05:00</div><div class="tlt">Lung — Collagen</div><div class="tldt">Synthesis peaks. CICA active. Nasal NO.</div></div><div class="tlb"><div class="tld"></div><div class="tlbl">07:00</div><div class="tlt">Wake</div><div class="tldt"><strong>10 min outdoor light.</strong> No phone 30–60 min.</div></div></div></div>
+<div class="pillars"><div class="pillar"><div class="pillar-num">I</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v3M12 18v3"/><rect x="6" y="6" width="12" height="12" rx="2" opacity=".4"/></svg></div><div class="pillar-text">Last meal <strong style="color:var(--amberB)">20:00</strong></div></div><div class="pillar"><div class="pillar-num">II</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div><div class="pillar-text">Morning light <strong style="color:var(--amberB)">10 min</strong></div></div><div class="pillar"><div class="pillar-num">III</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div><div class="pillar-text">Caffeine <strong style="color:var(--amberB)">before 13:00</strong></div></div><div class="pillar"><div class="pillar-num">IV</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 3a4 4 0 0 0-4 4v1H6v12h12V8h-2V7a4 4 0 0 0-4-4z" opacity=".4"/><path d="M8 12l2 2 4-4"/></svg></div><div class="pillar-text">Bedroom <strong style="color:var(--amberB)">18–19°C</strong></div></div><div class="pillar"><div class="pillar-num">V</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="8" y1="8" x2="16" y2="16" opacity=".6"/><line x1="16" y1="8" x2="8" y2="16" opacity=".6"/></svg></div><div class="pillar-text">Red mode til <strong style="color:var(--amberB)">21:30</strong></div></div><div class="pillar"><div class="pillar-num">VI</div><div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><ellipse cx="12" cy="9" rx="3" ry="4"/><path d="M9 9c0-1.5 1.5-3 3-3s3 1.5 3 3"/></svg></div><div class="pillar-text"><strong style="color:var(--amberB)">Nasal</strong> breathing</div></div></div></div>
+
+<!-- SUPPLEMENTS --><div id="t-supp" class="tc"><div class="mh"><div class="mt">Module 06</div><h2>Supplement Stack</h2><p>Four tiers plus Novair Debloat.</p></div>
+<div class="tier-row"><div class="tier-orb"><div class="tier-dot" style="color:var(--sage);background:var(--sage)"></div><div class="tier-meta"><span class="tier-name" style="color:var(--sage)">Foundation</span><span class="tier-ct">4 daily</span></div></div><div class="tier-orb"><div class="tier-dot" style="color:var(--sageBright);background:var(--sageBright)"></div><div class="tier-meta"><span class="tier-name" style="color:var(--sageBright)">Growth</span><span class="tier-ct">3 daily</span></div></div><div class="tier-orb"><div class="tier-dot" style="color:var(--rose);background:var(--rose)"></div><div class="tier-meta"><span class="tier-name" style="color:var(--rose)">Performance</span><span class="tier-ct">4 daily</span></div></div><div class="tier-orb"><div class="tier-dot" style="color:var(--amber);background:var(--amber)"></div><div class="tier-meta"><span class="tier-name" style="color:var(--amber)">TCM Tonics</span><span class="tier-ct">2 optional</span></div></div></div>
+<div class="cd"><div class="cl"><span class="d d-n"></span> <span style="color:var(--sage)">Foundation</span></div><table class="st"><thead><tr><th>Supp</th><th>Dose</th><th>Role</th><th>TCM</th></tr></thead><tbody><tr><td><span class="sn">D3+K2</span></td><td><span class="sd">3–4K+100µg</span> AM</td><td>T, GH receptors, Ca↑30%</td><td>Kidney Yang</td></tr><tr><td><span class="sn">Mg Glycinate</span></td><td><span class="sd">300–400mg</span> PM</td><td>Deep sleep, eNOS</td><td>Liver Blood</td></tr><tr><td><span class="sn">Omega-3</span></td><td><span class="sd">2–3g</span> AM</td><td>Anti-inflam, GH→IGF-1</td><td>Clears Damp-Heat</td></tr><tr><td><span class="sn">Zinc</span></td><td><span class="sd">15–25mg</span> dinner</td><td>T, GH, IGF-1</td><td>Kidney Jing</td></tr></tbody></table></div>
+<div class="cd" style="border-color:var(--sageD)"><div class="cl"><span class="d d-t"></span> <span style="color:var(--sageBright)">Growth</span></div><table class="st"><thead><tr><th>Supp</th><th>Dose</th><th>Role</th></tr></thead><tbody><tr><td><span class="sn">Vitamin C</span></td><td><span class="sd">500mg×2</span></td><td>Collagen cofactor</td></tr><tr><td><span class="sn">Boron</span></td><td><span class="sd">3–6mg</span> AM</td><td>↓SHBG, ↑D3, osteoblasts</td></tr><tr><td><span class="sn">Glycine</span></td><td><span class="sd">3g</span> PM</td><td>Collagen + GH stim</td></tr></tbody></table></div>
+<div class="cd"><div class="cl"><span class="d d-s"></span> <span style="color:var(--rose)">Performance</span></div><table class="st"><thead><tr><th>Supp</th><th>Dose</th><th>NO</th><th>HGH</th></tr></thead><tbody><tr><td><span class="sn">L-Citrulline</span></td><td><span class="sd">6–8g split</span></td><td>→eNOS→NO</td><td>PM 40–60%↑</td></tr><tr><td><span class="sn">Beetroot</span></td><td><span class="sd">5–10g</span> AM</td><td>Nitrate→NO</td><td>Flow→GH</td></tr><tr><td><span class="sn">Creatine</span></td><td><span class="sd">5g</span> AM</td><td>—</td><td>↑Int→↑GH</td></tr><tr><td><span class="sn">Apigenin</span></td><td><span class="sd">50mg</span> bed</td><td>—</td><td>NREM</td></tr></tbody></table></div>
+<div class="cd" style="border-color:var(--sageD)"><div class="cl"><span class="d d-t"></span> <span style="color:var(--sageBright)">Novair Debloat</span></div><p><strong>Dandelion</strong> (IGF-1), <strong>Horsetail</strong> (silica), <strong>Nettle</strong> (↓SHBG), <strong>Hibiscus</strong> (vasodilatory), <strong>Juniper</strong> (carminative). 1 scoop AM.</p></div>
+<div class="cd"><div class="cl"><span class="d d-g"></span> <span style="color:var(--amber)">TCM Tonics</span></div><p><strong>Ashwagandha</strong> (300–600mg PM) — cortisol ↓15–30%. <strong>Reishi</strong> (1–2g PM) — hepatoprotective. Cycle 5/2.</p></div>
+<div class="supp-edicts">
+<div class="supp-edict"><span class="se-glyph">I</span><div class="se-title">Foundation First</div><div class="se-line"></div><div class="se-sub">Run Foundation tier alone for 4 weeks before adding Growth or Performance. <em>Build the soil before planting seeds.</em></div></div>
+<div class="supp-edict"><span class="se-glyph">II</span><div class="se-title">PM Cocktail Fasted</div><div class="se-line"></div><div class="se-sub">Mg + Citrulline + Glycine + Vit C + Apigenin at 21:00. Nothing caloric within 2.5 hrs. <em>Insulin gates HGH.</em></div></div>
+<div class="supp-edict"><span class="se-glyph">III</span><div class="se-title">Guard the NO Pathway</div><div class="se-line"></div><div class="se-sub">No antibacterial mouthwash — it kills oral nitrate-reducing bacteria. Beetroot → NO depends on them.</div></div>
+<div class="supp-edict"><span class="se-glyph">IV</span><div class="se-title">Verify at 8 Weeks</div><div class="se-line"></div><div class="se-sub">Blood test: 25-OH D, serum Zn, RBC Mg, free + total T, IGF-1, BALP. <em>Measure, don't guess.</em></div></div>
+</div>
+<div class="supp-tl">
+<div class="supp-tl-title">Daily Timing Architecture</div>
+<div class="supp-tl-track">
+<div class="supp-tl-fill" style="width:100%"></div>
+<div class="supp-tl-dot" style="left:4%;background:var(--sage);color:var(--sage)" data-label="D3+K2 · Omega-3 · Boron · Vit C"></div>
+<div class="supp-tl-dot" style="left:6%;background:var(--sageBright);color:var(--sageBright)" data-label="Creatine · Beetroot · Citrulline 3g"></div>
+<div class="supp-tl-dot" style="left:8%;background:var(--sand);color:var(--sand)" data-label="Novair Debloat"></div>
+<div class="supp-tl-dot" style="left:52%;background:var(--sage);color:var(--sage)" data-label="Zinc 15–25mg"></div>
+<div class="supp-tl-dot" style="left:82%;background:var(--slate);color:var(--slate)" data-label="Mg · Citrulline 3g · Glycine"></div>
+<div class="supp-tl-dot" style="left:84%;background:var(--rose);color:var(--rose)" data-label="Vit C · Apigenin"></div>
+<div class="supp-tl-dot" style="left:86%;background:var(--amber);color:var(--amber)" data-label="Ashwagandha · Reishi (opt.)"></div>
+</div>
+<div class="supp-tl-labels"><span>07:00</span><span>13:00</span><span>19:30</span><span>21:00</span></div>
+<div class="supp-tl-clusters">
+<div class="supp-tl-cluster"><div class="stlc-time">07:30</div><div class="stlc-label">AM STACK</div><div class="stlc-items">D3+K2 · Omega-3 · Boron<br>Creatine · Beetroot · Cit. 3g<br>Vit C 500mg · Debloat</div></div>
+<div class="supp-tl-cluster"><div class="stlc-time">19:30</div><div class="stlc-label">DINNER</div><div class="stlc-items">Zinc 15–25mg<br>(with food)</div></div>
+<div class="supp-tl-cluster"><div class="stlc-time">21:00</div><div class="stlc-label">PM COCKTAIL</div><div class="stlc-items">Mg 300–400mg · Cit. 3g<br>Glycine 3g · Vit C 500mg<br>Apigenin 50mg</div></div>
+</div>
+
+<div class="shop-section">
+<div class="shop-section-title">Shop — Foundation</div>
+<div class="shop-grid">
+<a href="https://uk.iherb.com/pr/nutricost-vitamin-k2-vitamin-d3-120-softgels/128921" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sage);color:var(--sage)"></div><div><div class="shop-name">D3 + K2 (5000IU/100µg)</div><div class="shop-store">iHerb · Nutricost</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/pr/now-foods-magnesium-glycinate-180-tablets-100-mg-per-tablet/88819" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sage);color:var(--sage)"></div><div><div class="shop-name">Magnesium Glycinate 180ct</div><div class="shop-store">iHerb · NOW Foods</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/c/fish-oil-omegas-epa-dha" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sage);color:var(--sage)"></div><div><div class="shop-name">Omega-3 (EPA + DHA)</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/c/zinc" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sage);color:var(--sage)"></div><div><div class="shop-name">Zinc Picolinate 15–25mg</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+</div></div>
+
+<div class="shop-section">
+<div class="shop-section-title">Shop — Growth</div>
+<div class="shop-grid">
+<a href="https://uk.iherb.com/c/vitamin-c" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sageBright);color:var(--sageBright)"></div><div><div class="shop-name">Vitamin C 500mg</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/pr/swanson-albion-boron-6-mg-60-vegan-capsules/118069" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sageBright);color:var(--sageBright)"></div><div><div class="shop-name">Boron 6mg Albion</div><div class="shop-store">iHerb · Swanson</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/pr/now-foods-glycine-pure-powder-1-lb-454-g/615" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--sageBright);color:var(--sageBright)"></div><div><div class="shop-name">Glycine Pure Powder 454g</div><div class="shop-store">iHerb · NOW Foods</div></div><span class="shop-arrow">→</span></a>
+</div></div>
+
+<div class="shop-section">
+<div class="shop-section-title">Shop — Performance</div>
+<div class="shop-grid">
+<a href="https://uk.iherb.com/pr/now-foods-l-citrulline-750-mg-180-veg-capsules/14209" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--rose);color:var(--rose)"></div><div><div class="shop-name">L-Citrulline 750mg × 180</div><div class="shop-store">iHerb · NOW Foods</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/c/beet-root" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--rose);color:var(--rose)"></div><div><div class="shop-name">Beetroot Powder</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/c/creatine-monohydrate" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--rose);color:var(--rose)"></div><div><div class="shop-name">Creatine Monohydrate 5g</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/pr/swanson-apigenin-50-mg-90-capsules/116327" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--rose);color:var(--rose)"></div><div><div class="shop-name">Apigenin 50mg × 90</div><div class="shop-store">iHerb · Swanson</div></div><span class="shop-arrow">→</span></a>
+</div></div>
+
+<div class="shop-section">
+<div class="shop-section-title">Shop — TCM Tonics + Debloat</div>
+<div class="shop-grid">
+<a href="https://uk.iherb.com/c/ashwagandha" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--amber);color:var(--amber)"></div><div><div class="shop-name">Ashwagandha KSM-66</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://uk.iherb.com/c/reishi-mushrooms" target="_blank" rel="noopener" class="shop-btn"><div class="shop-dot" style="background:var(--amber);color:var(--amber)"></div><div><div class="shop-name">Reishi Dual-Extract</div><div class="shop-store">iHerb · Best sellers</div></div><span class="shop-arrow">→</span></a>
+<a href="https://novairhealth.com/products/debloat-electrolyte-balance-formula" target="_blank" rel="noopener" class="shop-btn" style="border-color:var(--sandD)"><div class="shop-dot" style="background:var(--sand);color:var(--sand)"></div><div><div class="shop-name">Novair Debloat</div><div class="shop-store">Novair Health · Direct</div></div><span class="shop-arrow">→</span></a>
+</div></div>
+
+</div><div id="t-grow" class="tc"><div class="mh"><div class="mt">Growth Audit</div><h2>Skeletal & Muscular Growth</h2><p>Tap any zone to see what the protocol targets.</p></div><div class="body-map"><div class="body-svg-wrap"><svg viewBox="0 0 120 280" xmlns="http://www.w3.org/2000/svg"><ellipse class="body-zone" data-zone="head" cx="60" cy="28" rx="18" ry="22" fill="var(--amberD)" stroke="var(--amber)" stroke-width=".8" opacity=".6"/><rect class="body-zone" data-zone="spine" x="55" y="50" width="10" height="30" rx="4" fill="var(--sageD)" stroke="var(--sage)" stroke-width=".8" opacity=".6"/><path class="body-zone" data-zone="shoulders" d="M35 60 Q60 52 85 60 L82 72 Q60 66 38 72 Z" fill="var(--roseD)" stroke="var(--rose)" stroke-width=".8" opacity=".6"/><path class="body-zone" data-zone="chest" d="M38 72 Q60 66 82 72 L80 110 Q60 115 40 110 Z" fill="var(--slateD)" stroke="var(--slate)" stroke-width=".8" opacity=".6"/><path class="body-zone" data-zone="arms" d="M35 65 L22 120 L30 122 L40 75 Z" fill="var(--sandD)" stroke="var(--sand)" stroke-width=".8" opacity=".5"/><path class="body-zone" data-zone="arms" d="M85 65 L98 120 L90 122 L80 75 Z" fill="var(--sandD)" stroke="var(--sand)" stroke-width=".8" opacity=".5"/><path class="body-zone" data-zone="core" d="M40 110 Q60 115 80 110 L78 150 Q60 155 42 150 Z" fill="var(--amberD)" stroke="var(--amber)" stroke-width=".8" opacity=".5"/><path class="body-zone" data-zone="legs" d="M42 150 L36 230 L48 230 L55 155 Z" fill="var(--sageD)" stroke="var(--sage)" stroke-width=".8" opacity=".5"/><path class="body-zone" data-zone="legs" d="M78 150 L84 230 L72 230 L65 155 Z" fill="var(--sageD)" stroke="var(--sage)" stroke-width=".8" opacity=".5"/><ellipse class="body-zone" data-zone="feet" cx="42" cy="238" rx="10" ry="6" fill="var(--txtM)" stroke="var(--txtM)" stroke-width=".5" opacity=".3"/><ellipse class="body-zone" data-zone="feet" cx="78" cy="238" rx="10" ry="6" fill="var(--txtM)" stroke="var(--txtM)" stroke-width=".5" opacity=".3"/></svg></div><div class="body-info" id="bodyInfo"><div class="body-info-card"><h4 style="color:var(--amberB)">Select a Zone</h4><p style="font-size:11.5px;color:var(--txt2)">Tap any body region to see how the protocol targets growth there.</p><div style="margin-top:14px"><div class="growth-stat"><div class="growth-stat-dot" style="background:var(--amber)"></div><span class="growth-stat-label">HGH / IGF-1</span><span class="growth-stat-value">OPTIMISED</span></div><div class="growth-stat"><div class="growth-stat-dot" style="background:var(--sage)"></div><span class="growth-stat-label">Testosterone</span><span class="growth-stat-value">OPTIMISED</span></div><div class="growth-stat"><div class="growth-stat-dot" style="background:var(--rose)"></div><span class="growth-stat-label">Collagen</span><span class="growth-stat-value">OPTIMISED</span></div><div class="growth-stat"><div class="growth-stat-dot" style="background:var(--slate)"></div><span class="growth-stat-label">Bone</span><span class="growth-stat-value">OPTIMISED</span></div><div class="growth-stat"><div class="growth-stat-dot" style="background:var(--sand)"></div><span class="growth-stat-label">Blood Flow</span><span class="growth-stat-value">OPTIMISED</span></div></div></div></div></div>
+<div class="cd"><div class="cl"><span class="d d-o"></span> <span style="color:var(--sand)">Behavioural</span></div><p><strong>Axial loading</strong> — dips, pull-ups, squats. <strong>Decompression</strong> — dead hang daily. <strong>Posture</strong> — rows correct kyphosis (2–5 cm). <strong>Caloric surplus.</strong></p></div>
+<div class="sb sb-t" style="margin-top:12px"><h4>Growth Windows — Time-Sensitive</h4><p><strong>Open plates (18–25):</strong> Axial loading + full mineralisation stack = new bone length possible. <strong>Closing plates (25+):</strong> Focus shifts to density, posture correction (2–5 cm from kyphosis reversal), and spinal decompression (dead hang reclaims 1–2 cm daily). <em>Regardless of age, the protocol ensures 100% expression of your genetic ceiling.</em></p></div></div>
+
+<!-- NUTRITION --><div id="t-nutr" class="tc"><div class="mh"><div class="mt">Module 02</div><h2>Metabolic & Thermal Fuelling</h2><p>Simple rules mapped to TCM thermal nature.</p></div><div class="recv-card" style="border-color:var(--amberD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--amberD)"><div style="position:absolute;inset:0;background:var(--amber);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="recv-title">5 Nutrition Rules</div></div></div><div class="tl" style="margin-top:12px"><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Protein every meal — 1.6–2.2 g/kg/day</div><div class="tldt">3–4 feedings. Leucine threshold per meal. <em>Warm-natured Qi builders.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Largest meal at breakfast or lunch</div><div class="tldt">Insulin sensitivity peaks AM. <em>"Eat breakfast like a king."</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Warm, cooked food as default</div><div class="tldt">Higher bioavailability. Supports Spleen Yang.</div></div><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Nothing caloric 2.5 hrs before bed</div><div class="tldt">Dinner by 20:00. Protects HGH.</div></div><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">No seed oils, ultra-processed, excess sugar</div><div class="tldt">Cook with olive oil, butter, ghee, coconut oil.</div></div></div></div>
+<div class="recv-card" style="border-color:var(--sageD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--sageD)"><div style="position:absolute;inset:0;background:var(--sage);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8" opacity=".4"/></svg></div><div><div class="recv-title">TCM Thermal Food Map</div><p style="font-size:10.5px;color:var(--txtM)">Every food has a thermal nature — match it to your current state</p></div></div>
+<div class="tl" style="margin-top:14px">
+<div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlbl" style="color:var(--rose)">Warm — Default + Post-Training</div><div class="tlt">Yang-nourishing foods that build Qi and drive blood</div><div class="tldt"><strong>Lamb · Beef · Chicken · Oats · Sweet potato · Ginger · Turmeric · Beetroot · Cinnamon · Walnuts</strong><br>Use as your base — especially breakfast and post-training. These foods strengthen Spleen Yang (digestive fire), warm the Kidney, and support anabolism. Beetroot is dual-purpose: warm nature + nitrate→NO for blood flow.</div></div>
+<div class="tlb"><div class="tld" style="border-color:var(--sand)"></div><div class="tlbl" style="color:var(--sand)">Neutral — Bulk of Diet</div><div class="tlt">Balanced foods that neither heat nor cool</div><div class="tldt"><strong>Rice · Eggs · Salmon · Sardines · Mushrooms · Lentils · Avocado · Almonds · Potato</strong><br>Safe daily staples. Salmon and sardines are your Omega-3 sources — they nourish Liver Blood and Kidney Jing. Eggs = complete amino profile. Rice = gentle on Spleen.</div></div>
+<div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlbl" style="color:var(--slate)">Cool — Summer / Acne Flares</div><div class="tlt">Yin-nourishing foods that clear internal heat</div><div class="tldt"><strong>Tofu · Cucumber · Spinach · Pear · Yoghurt · Green tea · Watermelon · Mint</strong><br>Use strategically when you notice acne flaring, irritability, or during hot weather. These clear Blood Heat and calm Liver Fire. Don't overuse in winter — weakens Spleen Yang.</div></div>
+<div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlbl" style="color:var(--rose)">Avoid — Always</div><div class="tlt">Foods that generate Damp-Heat and block growth pathways</div><div class="tldt"><strong>Deep-fried · Alcohol · Ice drinks · Seed oils · Refined sugar · Ultra-processed</strong><br>Seed oils (sunflower, canola, soybean) generate oxidative stress and Damp-Heat. Alcohol suppresses GH by 75% and depletes Liver Blood. Cook with <em>olive oil, butter, ghee, or coconut oil only</em>.</div></div>
+</div></div>
+<div class="recv-card" style="border-color:var(--sageD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--sageD)"><div style="position:absolute;inset:0;background:var(--sage);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8" opacity=".4"/><circle cx="12" cy="16" r="4"/></svg></div><div><div class="recv-title">Gut Health</div></div></div><div class="tl" style="margin-top:12px"><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Chew thoroughly</div><div class="tldt"><em>Give the Spleen properly prepared material.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Novair Debloat AM</div><div class="tldt">Dandelion (prebiotic) + juniper (carminative).</div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Fermented foods 3–5x/week</div><div class="tldt">Kimchi, sauerkraut, kefir, miso.</div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">No antibacterial mouthwash</div><div class="tldt">Kills oral bacteria for NO pathway.</div></div></div></div></div>
+
+<!-- PHYSICAL --><div id="t-phys" class="tc"><div class="mh"><div class="mt">Module 03</div><h2>Physical — Russian-Style Calisthenics</h2><p>Frequency-driven hypertrophy. Six training days, one true rest. Every session feeds the growth cascade.</p></div>
+
+<div class="recv-card" style="border-color:var(--roseD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--roseD)"><div style="position:absolute;inset:0;background:var(--rose);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"><path d="M12 4l3 8h-6z"/><line x1="6" y1="16" x2="18" y2="16"/></svg></div><div><div class="recv-title">Push Days</div><p style="font-size:10.5px;color:var(--txtM)">Monday (A) + Friday (B) — Clavicle & chest density</p></div><span class="recv-badge" style="background:var(--roseD);color:var(--rose)">2×/WEEK</span></div>
+<div class="recv-grid"><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">4×6–10</div><div class="recv-stat-label">Weighted Dips</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">3×8–12</div><div class="recv-stat-label">Chest Press</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">3×10–15</div><div class="recv-stat-label">Tricep / Shoulders</div></div></div>
+<div class="tl" style="margin-top:14px"><div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlt">Weighted dips are the king of upper body</div><div class="tldt">Direct loading through clavicles, sternum, and humerus. Wolff's Law: bone density increases at stress points. Russian frequency method — 2× per week allows neural adaptation <em>and</em> mechanical overload. <em>TCM: Opens Lung channel through chest expansion — Wei Qi radiates outward.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlt">Push A vs Push B</div><div class="tldt"><strong>Monday:</strong> Chest Press 3×8–12 + Tricep isolation. <strong>Friday:</strong> Chest variation (incline/fly) + Shoulder press. Both start with dips. Vary the accessory, keep the compound constant.</div></div></div></div>
+
+<div class="recv-card" style="border-color:var(--amberD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--amberD)"><div style="position:absolute;inset:0;background:var(--amber);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><path d="M12 4v16"/><path d="M8 8l4-4 4 4"/><path d="M8 20l4-4 4 4" opacity=".4"/></svg></div><div><div class="recv-title">Pull + VO2 Max</div><p style="font-size:10.5px;color:var(--txtM)">Tuesday — Peak GH session of the week</p></div><span class="recv-badge" style="background:var(--amberD);color:var(--amber)">PEAK GH</span></div>
+<div class="recv-grid"><div class="recv-stat"><div class="recv-stat-val" style="color:var(--amber)">4×5–8</div><div class="recv-stat-label">Weighted Pull-ups</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--amber)">3×8–12</div><div class="recv-stat-label">Seated Rows</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--amber)">6–10 × 30s</div><div class="recv-stat-label">Sled VO2 Max</div></div></div>
+<div class="tl" style="margin-top:14px"><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Pull-ups correct kyphosis — reclaim 2–5 cm</div><div class="tldt">Lat engagement pulls scapulae down and back. Rows reinforce. Together they reverse the forward-head posture that compresses thoracic spine height. <em>TCM: Strengthens the Du Mai (Governing Vessel) that runs up the spine.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--amber)"></div><div class="tlt">Sled VO2 Max — acute GH via lactate</div><div class="tldt">High-intensity intervals generate massive lactate → directly stimulates GH secretion. 6–10 rounds of 30s all-out / 90s rest. This is the single most potent acute GH trigger in the entire programme. Cold exposure OK same day (4+ hr gap from AM sled).</div></div></div></div>
+
+<div class="recv-card" style="border-color:var(--sageD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--sageD)"><div style="position:absolute;inset:0;background:var(--sage);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><path d="M8 4v16M16 4v16"/><circle cx="8" cy="4" r="2" opacity=".5"/><circle cx="16" cy="4" r="2" opacity=".5"/></svg></div><div><div class="recv-title">Legs + Badminton</div><p style="font-size:10.5px;color:var(--txtM)">Wednesday — King of axial loading</p></div><span class="recv-badge" style="background:var(--sageD);color:var(--sage)">GROWTH</span></div>
+<div class="recv-grid"><div class="recv-stat"><div class="recv-stat-val" style="color:var(--sage)">4×6–10</div><div class="recv-stat-label">Barbell Squat</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--sage)">3×10–12</div><div class="recv-stat-label">Leg Press</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--sage)">3×12–15</div><div class="recv-stat-label">Extensions</div></div></div>
+<div class="tl" style="margin-top:14px"><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Squat loads the entire axial skeleton</div><div class="tldt">Compressive force through femur, tibia, spine, and pelvis. Most potent osteoblast activator. Combined with Ca + D3 + K2 + Boron, this is the direct bone-building stimulus. <em>TCM: Kidney governs bones — squat loads activate Kidney Qi from the ground up.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Badminton follows — lateral ground reaction forces</div><div class="tldt">Multi-directional movement loads bones at angles that gym work misses. Jumps, lunges, lateral shuffles. Also drives BDNF (brain) and aerobic base.</div></div></div></div>
+
+<div class="recv-card" style="border-color:var(--slateD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--slateD)"><div style="position:absolute;inset:0;background:var(--slate);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" opacity=".4"/></svg></div><div><div class="recv-title">Arms (Bicep Focus)</div><p style="font-size:10.5px;color:var(--txtM)">Thursday — CNS recovery day</p></div><span class="recv-badge" style="background:var(--slateD);color:var(--slate)">RECOVERY</span></div>
+<div class="tl" style="margin-top:12px"><div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlt">Curls · Hammers · Chin-ups · Preachers</div><div class="tldt">Lighter CNS load between two heavy compound days. Bicep hypertrophy work. Chin-ups bridge pulling and arm volume. This is a strategic deload for the nervous system — not a rest day. Cold exposure OK.</div></div></div></div>
+
+<div class="recv-card" style="border-color:var(--sandD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--sandD)"><div style="position:absolute;inset:0;background:var(--sand);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--sand)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8" r="3"/><path d="M12 11v6"/><path d="M8 20l4-3 4 3" opacity=".4"/></svg></div><div><div class="recv-title">Badminton + Rest</div><p style="font-size:10.5px;color:var(--txtM)">Saturday (active) + Sunday (complete rest)</p></div><span class="recv-badge" style="background:var(--sandD);color:var(--sand)">WEEKEND</span></div>
+<div class="tl" style="margin-top:12px"><div class="tlb"><div class="tld" style="border-color:var(--sand)"></div><div class="tlt">Saturday — Full badminton session</div><div class="tldt">Active recovery. Multi-directional loading, aerobic base, BDNF for neuroplasticity. No heavy resistance — let the body consolidate the week's training stimulus.</div></div><div class="tlb"><div class="tld" style="border-color:var(--sand)"></div><div class="tlt">Sunday — Complete rest. Qi Gong + mobility only</div><div class="tldt"><em>After Yang, Yin. After movement, stillness.</em> Growth happens during rest. Muscle protein synthesis, bone mineralisation, tendon remodelling — all peak during recovery. Ba Duan Jin + 5 min mobility is the ceiling.</div></div></div></div>
+
+<div class="cmd-rules"><div class="cmd"><span class="cmd-num">1</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Progressive overload weekly</strong> — add reps or weight to dips, pull-ups, squats.</span></div><div class="cmd"><span class="cmd-num">2</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Train before 19:00.</strong> Late training raises cortisol and impairs HGH pulse.</span></div><div class="cmd"><span class="cmd-num">3</span><span class="cmd-divider"></span><span class="cmd-text"><strong>Dead hang 2–3 min daily.</strong> Spinal decompression + grip strength.</span></div><div class="cmd"><span class="cmd-num">4</span><span class="cmd-divider"></span><span class="cmd-text"><strong>No cold within 4 hrs</strong> of heavy compound movements (mTOR blunting).</span></div><div class="cmd"><span class="cmd-num">5</span><span class="cmd-divider"></span><span class="cmd-text"><strong>AM: Ba Duan Jin 5 min.</strong> PM: Mobility 5 min. <em>Non-negotiable daily bookends.</em></span></div></div></div>
+
+<!-- NEURO --><div id="t-neur" class="tc"><div class="mh"><div class="mt">Module 04</div><h2>Neuro & Shen</h2><p>Seven nodes of neurological and spiritual defence. Each one protects a different axis of cognitive performance.</p></div>
+
+<div class="neuro-hub">
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--amber);color:var(--amber)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--amberD);border:1px solid var(--amberD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01" stroke-width="2"/></svg></div><span class="nn-title">Phone Gate</span><span class="nn-val" style="background:var(--amberD);color:var(--amber)">30–60 MIN</span></div>
+<div class="nn-body">No phone for the first 30–60 min after waking. This window is when cortisol naturally peaks — scrolling forces a <strong>dopamine spike before baseline is set</strong>, creating craving-loops for the rest of the day. Instead: light, Qi Gong, shake, skincare. <em>Don't scatter rising Yang Qi — let it consolidate upward through the Du Mai before engaging external stimuli.</em></div>
+</div>
+
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--rose);color:var(--rose)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--roseD);border:1px solid var(--roseD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></div><span class="nn-title">Dopamine from Cold</span><span class="nn-val" style="background:var(--roseD);color:var(--rose)">200–300%</span></div>
+<div class="nn-body">AM cold shower 1–3 min delivers a <strong>sustained dopamine increase lasting 2–3 hrs</strong> with no crash — unlike caffeine, social media, or sugar, which spike and drop. This is the only reliable way to raise baseline dopamine without tolerance buildup. <em>Yang shock to the surface activates Kidney Yang and drives Qi circulation.</em></div>
+</div>
+
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--slate);color:var(--slate)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--slateD);border:1px solid var(--slateD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 10h8M8 14h5" opacity=".5"/></svg></div><span class="nn-title">Screen Curfew</span><span class="nn-val" style="background:var(--slateD);color:var(--slate)">21:00 → 21:30</span></div>
+<div class="nn-body"><strong>Red/amber mode at 21:00.</strong> All screens off by 21:30. Blue light between 22:00–04:00 suppresses melatonin onset by 40+ minutes and fragments deep NREM — the window where your HGH fires. This is a triple attack: melatonin, Shen stability, and dopamine reset. <em>Heart-Shen returns to its residence (Heart Blood) only in stillness and darkness.</em></div>
+</div>
+
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--sage);color:var(--sage)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--sageD);border:1px solid var(--sageD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9" opacity=".4"/><path d="M8 12c0-2 1.5-4 4-4s4 2 4 4"/><path d="M9 16c1 1.5 2.5 2 3 2s2-.5 3-2" opacity=".5"/></svg></div><span class="nn-title">Embrace Boredom</span></div>
+<div class="nn-body">Constant stimulation erodes dopamine receptor sensitivity. The <strong>boredom window</strong> — waiting without a phone, walking without music, sitting without scrolling — is where baseline dopamine rebuilds. Schedule it or it won't happen. <em>Stillness nourishes Yin. The mind clarifies when Shen isn't scattered by 1,000 inputs.</em></div>
+</div>
+
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--sand);color:var(--sand)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--sandD);border:1px solid var(--sandD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--sand)" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16v16H4z" opacity=".3"/><path d="M9 9h6v6H9z"/><path d="M4 12h5M15 12h5M12 4v5M12 15v5" opacity=".4"/></svg></div><span class="nn-title">Social Media Blocks</span><span class="nn-val" style="background:var(--sandD);color:var(--sand)">12:00 · 18:00</span></div>
+<div class="nn-body">No infinite scroll. Social media in <strong>two intentional 15-min blocks</strong> — midday and early evening. Outside those windows, apps are closed. Variable reward schedules (likes, comments, refreshing) are the strongest dopamine trap. <em>Scattered Shen fragments into a thousand objects of attention. Two blocks contain it.</em></div>
+</div>
+
+<div class="neuro-node">
+<div class="nn-pulse" style="background:var(--rose);color:var(--rose)"></div>
+<div class="nn-header"><div class="nn-icon" style="background:var(--roseD);border:1px solid var(--roseD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" opacity=".6"/><path d="M16.5 7.5l-1 2M7.5 16.5l2-1" opacity=".3"/></svg></div><span class="nn-title">Focus Architecture</span><span class="nn-val" style="background:var(--roseD);color:var(--rose)">90 MIN MAX</span></div>
+<div class="nn-body">The brain operates in <strong>ultradian cycles of ~90 minutes</strong> — focus peaks then drops regardless of willpower. Work in 90-min blocks with 10–20 min breaks between. Use Box Breathing before each block to prime the prefrontal cortex. Train at a consistent time daily to entrain the cycle. Caffeine before 13:00 amplifies the first two cycles without disrupting sleep architecture. <em>TCM: The Heart houses Shen (awareness) — sustained focus requires Heart Blood to be abundant and calm. Overwork without rest scatters Shen and depletes Heart Yin, leading to insomnia, anxiety, and poor memory consolidation.</em></div>
+</div>
+
+<div class="neuro-node neuro-wide">
+<div class="nn-header"><div class="nn-icon" style="background:var(--sageD);border:1px solid var(--sageD)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l-2 2"/><circle cx="12" cy="12" r="2.5" opacity=".3"/></svg></div><span class="nn-title">Breathwork & Shen Anchoring</span></div>
+<div class="nn-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:4px">
+<div><strong>Physiological Sigh</strong><br><span style="color:var(--txt2)">Double inhale + long exhale. Fastest real-time anxiety reset. Use as needed — before exams, conflict, or overwhelm. <em>Descends Lung Qi instantly.</em></span></div>
+<div><strong>Box Breathing 4s×4</strong><br><span style="color:var(--txt2)">4 min before study or deep work. In-hold-out-hold, 4 seconds each. Engages parasympathetic, raises HRV. <em>Harmonises Heart-Kidney axis (Yin-Yang).</em></span></div>
+<div><strong>Dantian Awareness</strong><br><span style="color:var(--txt2)">2 min during PM skincare — zero extra time cost. Breathe into lower abdomen. Attention sinks from head to Dantian. <em>Gathers scattered Qi back to the Jing reservoir.</em></span></div>
+</div></div>
+</div>
+
+<div class="sb sb-b"><h4>Cognitive Stack — Already in Your Protocol</h4><p><strong>Creatine</strong> — brain ATP ↑5–10%. <strong>Omega-3 DHA</strong> — synaptic membrane fluidity. <strong>Mg Glycinate</strong> — NMDA receptor regulation. <strong>Ashwagandha</strong> — cortisol ↓15–30%. <strong>D3</strong> — serotonin cofactor. No extra pills — these are dual-purpose.</p></div></div>
+
+<!-- RECOVERY --><div id="t-recv" class="tc"><div class="mh"><div class="mt">Module 05</div><h2>Restorative Resilience</h2><p>Cold, heat, active recovery — balanced with Kidney Yang protection.</p></div>
+<div class="recv-card" style="border-color:var(--slateD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--slateD)"><div style="position:absolute;inset:0;background:var(--slate);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2v4M4.93 4.93l2.83 2.83M2 12h4M18 12h4M16.24 16.24l2.83 2.83M12 18v4"/><circle cx="12" cy="12" r="3" opacity=".5"/></svg></div><div><div class="recv-title">Cold Exposure</div><p style="font-size:10.5px;color:var(--txtM)">1–3 min cold shower finish</p></div><span class="recv-badge" style="background:var(--slateD);color:var(--slate)">AM ONLY</span></div><div class="recv-grid"><div class="recv-stat"><div class="recv-stat-val" style="color:var(--slate)">200–300%</div><div class="recv-stat-label">Dopamine↑</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--slate)">2–3 hrs</div><div class="recv-stat-label">Sustained</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--slate)">200–500%</div><div class="recv-stat-label">Norepinephrine↑</div></div></div><div class="tl" style="margin-top:16px"><div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlt">End of warm shower → cold 1–3 min</div><div class="tldt">Start 30 sec, build over 2–4 weeks.</div></div><div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlt">Morning only — never within 3 hrs of bed</div><div class="tldt">Cold is Yang-activating. PM shocks Kidney.</div></div><div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlt">Not within 4 hrs of heavy compounds</div><div class="tldt">Blunts mTOR. OK: <strong>Tue PM, Thu, Sat, Sun.</strong></div></div><div class="tlb"><div class="tld" style="border-color:var(--slate)"></div><div class="tlt">Kidney Yang depletion markers</div><div class="tldt">Persistent cold, fatigue, diminished erections → reduce.</div></div></div></div>
+<div class="recv-card" style="border-color:var(--roseD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--roseD)"><div style="position:absolute;inset:0;background:var(--rose);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--rose)" stroke-width="1.5" stroke-linecap="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10" opacity=".4"/><path d="M12 6v6l4 4"/></svg></div><div><div class="recv-title">Heat Exposure</div><p style="font-size:10.5px;color:var(--txtM)">Sauna or hot bath — 1–2x/week</p></div><span class="recv-badge" style="background:var(--roseD);color:var(--rose)">PM ONLY</span></div><div class="recv-grid"><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">200–300%</div><div class="recv-stat-label">Acute GH↑</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">HSP 70</div><div class="recv-stat-label">Heat shock proteins</div></div><div class="recv-stat"><div class="recv-stat-val" style="color:var(--rose)">15–20 min</div><div class="recv-stat-label">Duration</div></div></div><div class="tl" style="margin-top:16px"><div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlt">Sauna 80–100°C / Bath 40–42°C</div><div class="tldt">HSP70 protects muscle + cartilage. Epsom salts = Mg.</div></div><div class="tlb"><div class="tld" style="border-color:var(--rose)"></div><div class="tlt">2–3 hrs before bed</div><div class="tldt">Temp rise → drop amplifies sleep onset.</div></div></div></div>
+<div class="recv-card" style="border-color:var(--sageD)"><div class="recv-header"><div class="recv-icon" style="border:1px solid var(--sageD)"><div style="position:absolute;inset:0;background:var(--sage);opacity:.12;border-radius:10px"></div><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3"/></svg></div><div><div class="recv-title">Active Recovery</div></div><span class="recv-badge" style="background:var(--sageD);color:var(--sage)">DAILY</span></div><div class="tl" style="margin-top:12px"><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Dead hang 2–3 min daily</div><div class="tldt">Decompression + grip. <em>Opens UB meridian.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Foam roll 5 min post-training</div><div class="tldt">Thoracic, glutes, hip flexors.</div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">10,000 steps daily</div><div class="tldt">Lymphatic flow, blood sugar. <em>Stomach/Spleen meridians.</em></div></div><div class="tlb"><div class="tld" style="border-color:var(--sage)"></div><div class="tlt">Sleep — the ultimate recovery</div><div class="tldt">Training = stimulus. Sleep = adaptation. <em>Jing consolidates during rest.</em></div></div></div></div></div>
+
+<!-- SKINCARE --><div id="t-skin" class="tc"><div class="mh"><div class="mt">Module 07</div><h2>Skincare</h2><p>Tap any facial zone to see which products target it. Toggle AM/PM to see your routine for right now.</p></div>
+
+<div class="skin-toggle">
+<button class="skin-tog-btn stb-a" onclick="setSkinTime('am',this)">☀ AM Routine</button>
+<button class="skin-tog-btn" onclick="setSkinTime('pm',this)">☽ PM Routine</button>
+</div>
+
+<div class="face-map">
+<div class="face-svg-wrap">
+<svg viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg">
+<!-- Face outline -->
+<ellipse cx="80" cy="95" rx="55" ry="72" fill="var(--bg2)" stroke="var(--bdr)" stroke-width="1"/>
+<!-- Hairline -->
+<path d="M30 70 Q40 28 80 22 Q120 28 130 70" fill="none" stroke="var(--bdr)" stroke-width=".5" stroke-dasharray="3,3"/>
+<!-- Forehead / T-zone top -->
+<ellipse class="face-zone" data-face="forehead" cx="80" cy="52" rx="32" ry="18" fill="var(--amberD)" stroke="var(--amber)" stroke-width=".6" opacity=".45"/>
+<!-- Nose -->
+<path class="face-zone" data-face="nose" d="M73 72 Q80 68 87 72 L85 102 Q80 106 75 102 Z" fill="var(--roseD)" stroke="var(--rose)" stroke-width=".6" opacity=".45"/>
+<!-- Left cheek -->
+<ellipse class="face-zone" data-face="cheeks" cx="50" cy="95" rx="18" ry="22" fill="var(--sageD)" stroke="var(--sage)" stroke-width=".6" opacity=".4"/>
+<!-- Right cheek -->
+<ellipse class="face-zone" data-face="cheeks" cx="110" cy="95" rx="18" ry="22" fill="var(--sageD)" stroke="var(--sage)" stroke-width=".6" opacity=".4"/>
+<!-- Chin / jawline -->
+<ellipse class="face-zone" data-face="chin" cx="80" cy="138" rx="24" ry="16" fill="var(--slateD)" stroke="var(--slate)" stroke-width=".6" opacity=".4"/>
+<!-- Eyes (decorative) -->
+<ellipse cx="62" cy="76" rx="9" ry="4" fill="none" stroke="var(--txtM)" stroke-width=".5" opacity=".35"/>
+<ellipse cx="98" cy="76" rx="9" ry="4" fill="none" stroke="var(--txtM)" stroke-width=".5" opacity=".35"/>
+<circle cx="62" cy="76" r="2" fill="var(--txtM)" opacity=".2"/>
+<circle cx="98" cy="76" r="2" fill="var(--txtM)" opacity=".2"/>
+<!-- Mouth (decorative) -->
+<path d="M70 122 Q80 128 90 122" fill="none" stroke="var(--txtM)" stroke-width=".5" opacity=".3"/>
+<!-- Full face ring (tap for whole-face products) -->
+<ellipse class="face-zone" data-face="full" cx="80" cy="95" rx="55" ry="72" fill="none" stroke="var(--sand)" stroke-width="1.2" stroke-dasharray="4,4" opacity=".25"/>
+<!-- Zone labels -->
+<text x="80" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="5" fill="var(--txtM)" letter-spacing="1">T-ZONE</text>
+<text x="80" y="92" text-anchor="middle" font-family="var(--font-mono)" font-size="5" fill="var(--txtM)" letter-spacing="1">NOSE</text>
+<text x="80" y="142" text-anchor="middle" font-family="var(--font-mono)" font-size="5" fill="var(--txtM)" letter-spacing="1">CHIN</text>
+<text x="42" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="4.5" fill="var(--txtM)" letter-spacing=".5">CHEEK</text>
+<text x="118" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="4.5" fill="var(--txtM)" letter-spacing=".5">CHEEK</text>
+<!-- Outer label -->
+<text x="80" y="185" text-anchor="middle" font-family="var(--font-mono)" font-size="5.5" fill="var(--amberD)" letter-spacing="2">TAP A ZONE</text>
+</svg>
+</div>
+<div class="face-info" id="faceInfo">
+<div class="face-info-card">
+<h4 style="color:var(--amberB)">Select a Zone</h4>
+<div class="fi-sub">TAP ANY FACIAL REGION</div>
+<div class="fi-product"><div class="fi-dot" style="background:var(--sage);color:var(--sage)"></div><div><div class="fi-name">Whole-Face Base</div><div class="fi-reason">Cleanser, toner, niacinamide, SPF — applied everywhere, every day. <em>Wei Qi covers the entire exterior.</em></div></div></div>
+<div class="fi-product"><div class="fi-dot" style="background:var(--amber);color:var(--amber)"></div><div><div class="fi-name">Copper / BHA Alternation</div><div class="fi-reason">Copper M/W/F builds. BHA T/Th/Sa clears. Sun = rest. <em>Yin-Yang rhythm creates health.</em></div></div></div>
+<div class="fi-product"><div class="fi-dot" style="background:var(--rose);color:var(--rose)"></div><div><div class="fi-name">CICA Overnight</div><div class="fi-reason">Seals everything. Active during Lung time 03–05:00 when barrier repair peaks.</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="skin-rotation">
+<div class="skin-rot-card" style="border-color:var(--slateD)"><div class="skin-rot-days">M · W · F</div><div class="skin-rot-type" style="color:var(--slate)">Copper</div><div class="skin-rot-desc">GHK-Cu peptide. Build collagen. <strong>No acids.</strong></div></div>
+<div class="skin-rot-card" style="border-color:var(--sandD)"><div class="skin-rot-days">T · TH · SA</div><div class="skin-rot-type" style="color:var(--sand)">BHA</div><div class="skin-rot-desc">Salicylic 2%. Clear pores. <strong>Leave on.</strong></div></div>
+<div class="skin-rot-card" style="border-color:var(--sageD)"><div class="skin-rot-days">SUNDAY</div><div class="skin-rot-type" style="color:var(--sage)">Rest</div><div class="skin-rot-desc">Scrub + recovery. No actives. <strong>Barrier rebuilds.</strong></div></div>
+</div>
+
+<div class="sb sb-o" style="margin-top:12px"><h4>Key Rule</h4><p>Copper peptides need pH 5–6. Salicylic acid works at pH 3–4. Same evening = peptide denatured. <strong>Never mix them.</strong></p></div>
+</div>
+
+<!-- DAILY --><div id="t-day" class="tc"><div class="mh" style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap"><div><div class="mt">Complete Protocol</div><h2>Daily Protocol</h2><p>Four phases. Check off each step. Resets at midnight.</p></div><div class="streak-wrap" id="streakWrap"><span class="streak-flame">🔥</span><div><div class="streak-num" id="streakNum">0</div><div class="streak-label">Day streak</div></div></div></div><div class="ds"><button class="db a" onclick="sel('mon')">Mon</button><button class="db" onclick="sel('tue')">Tue</button><button class="db" onclick="sel('wed')">Wed</button><button class="db" onclick="sel('thu')">Thu</button><button class="db" onclick="sel('fri')">Fri</button><button class="db" onclick="sel('sat')">Sat</button><button class="db" onclick="sel('sun')">Sun</button></div><div id="dp"></div></div>
+
+<footer><p>Superhuman Protocol — Complete. Western Biology × TCM Energetics.</p></footer>
+</div>
+<script>
+// ===== LIVE CLOCK + TCM ORGAN =====
+const organClock=[
+{start:23,end:1,name:'Gallbladder',fn:'HGH Megapulse',c:'var(--rose)'},
+{start:1,end:3,name:'Liver',fn:'IGF-1 · Detox',c:'var(--sage)'},
+{start:3,end:5,name:'Lung',fn:'Collagen · CICA active',c:'var(--sageBright)'},
+{start:5,end:7,name:'Large Intestine',fn:'Wake prep',c:'var(--sand)'},
+{start:7,end:9,name:'Stomach',fn:'AM Stack window',c:'var(--amber)'},
+{start:9,end:11,name:'Spleen',fn:'Digestion peak',c:'var(--amberB)'},
+{start:11,end:13,name:'Heart',fn:'Shen at peak',c:'var(--rose)'},
+{start:13,end:15,name:'Small Intestine',fn:'Absorption',c:'var(--sand)'},
+{start:15,end:17,name:'Bladder',fn:'Detox · Training window',c:'var(--slate)'},
+{start:17,end:19,name:'Kidney',fn:'Jing consolidation',c:'var(--sage)'},
+{start:19,end:21,name:'Pericardium',fn:'Wind-down begins',c:'var(--rose)'},
+{start:21,end:23,name:'Triple Burner',fn:'PM Stack · Sleep prep',c:'var(--amber)'}
+];
+function getOrgan(h){return organClock.find(o=>{if(o.start>o.end)return h>=o.start||h<o.end;return h>=o.start&&h<o.end})}
+function updateClock(){const n=new Date(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds();
+const ts=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+document.getElementById('lcTime').textContent=ts;
+const org=getOrgan(h);if(org){document.getElementById('lcOrgan').innerHTML=`<em>${org.name}</em> · ${org.fn}`}}
+updateClock();setInterval(updateClock,1000);
+
+// ===== STREAK COUNTER =====
+function getStreak(){try{return JSON.parse(localStorage.getItem('sp_streak'))||{count:0,lastDate:null}}catch(e){return{count:0,lastDate:null}}}
+function saveStreak(s){try{localStorage.setItem('sp_streak',JSON.stringify(s))}catch(e){}}
+function updateStreakDisplay(){const s=getStreak();const el=document.getElementById('streakNum');const wrap=document.getElementById('streakWrap');if(el)el.textContent=s.count;if(wrap&&s.count>=3)wrap.classList.add('s-active');else if(wrap)wrap.classList.remove('s-active')}
+updateStreakDisplay();
+
+// ===== SKINCARE AM/PM TOGGLE =====
+let skinTimeMode='am';
+function setSkinTime(mode,btn){skinTimeMode=mode;document.querySelectorAll('.skin-tog-btn').forEach(b=>b.classList.remove('stb-a'));btn.classList.add('stb-a');
+// Reset face info to show mode-specific default
+const modeLabel=mode==='am'?'Morning Routine':'Evening Routine';
+const modeProducts=mode==='am'?[
+{name:'Tołpa Face Wash',dot:'var(--sage)',reason:'Cleanses overnight sebum and prepares skin for active ingredients.'},
+{name:'BHL Toner',dot:'var(--sage)',reason:'pH balancing prep layer. Optimises absorption of AM actives.'},
+{name:'Acne & Redness Killer',dot:'var(--rose)',reason:'Anti-inflammatory botanicals. Calms overnight flare-ups. <em>Cools Blood Heat.</em>'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'Sebum control + ceramide synthesis for daytime barrier strength.'},
+{name:'Norse Moisturize',dot:'var(--sand)',reason:'6-in-1 daily glow. Locks in actives before SPF.'},
+{name:'SPF 50',dot:'var(--sand)',reason:'Final AM step. UV protection non-negotiable. <em>Protects Wei Qi.</em>'}
+]:[
+{name:'Tołpa Face Wash',dot:'var(--sage)',reason:'Removes SPF, pollution, and oxidised daytime sebum.'},
+{name:'BHL Toner',dot:'var(--sage)',reason:'Re-balances pH after cleansing. Preps for PM actives.'},
+{name:'Active (Copper OR BHA)',dot:'var(--amber)',reason:'<strong>M/W/F:</strong> Copper Peptides 1% (collagen). <strong>T/Th/Sa:</strong> Salicylic 2% (pore clearing). <strong>Sun:</strong> Face Scrub.'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'Overnight ceramide synthesis and PIH fading.'},
+{name:'CICA Cream',dot:'var(--sage)',reason:'Seals everything. Centella works during Lung time 03–05:00. <em>Sheng Ji — generates flesh.</em>'}
+];
+document.getElementById('faceInfo').innerHTML=`<div class="face-info-card"><h4 style="color:var(--amberB)">${modeLabel}</h4><div class="fi-sub">${mode==='am'?'6 STEPS · EVERY MORNING':'5 STEPS · EVERY EVENING'}</div>${modeProducts.map(p=>`<div class="fi-product"><div class="fi-dot" style="background:${p.dot};color:${p.dot}"></div><div><div class="fi-name">${p.name}</div><div class="fi-reason">${p.reason}</div></div></div>`).join('')}</div>`;
+document.querySelectorAll('.face-zone').forEach(b=>b.classList.remove('fz-active'))}
+
+function sw(t){document.querySelectorAll('.tc').forEach(e=>e.classList.remove('a'));document.querySelectorAll('.tb').forEach(e=>e.classList.remove('a'));document.getElementById('t-'+t).classList.add('a');event.target.classList.add('a')}
+const bodyData={head:{title:'Brain & Cognitive',color:'var(--amberB)',items:[{l:'Glymphatic clearance',v:'NREM 23–01'},{l:'Creatine',v:'Brain ATP↑5–10%'},{l:'Omega-3 DHA',v:'Synaptic plasticity'},{l:'Nasal NO',v:'Vasodilation + O₂'}]},spine:{title:'Spine & Height',color:'var(--sageBright)',items:[{l:'Growth plates',v:'Final window 18–25'},{l:'Dead hang',v:'Decompress 1–2 cm'},{l:'Squats',v:'Axial loading'},{l:'Glycine + Vit C',v:'Collagen scaffold'}]},shoulders:{title:'Shoulder Girdle',color:'var(--rose)',items:[{l:'Weighted dips',v:'Clavicle density'},{l:'Ca+D3+K2+Boron',v:'Mineralisation'}]},chest:{title:'Chest',color:'var(--slate)',items:[{l:'Dips 2×/week',v:'Russian frequency'},{l:'Creatine',v:'↑Intensity→↑GH'}]},arms:{title:'Arms & Grip',color:'var(--sand)',items:[{l:'W. Pull-ups',v:'Bicep + forearm'},{l:'Thu bicep focus',v:'Hypertrophy'},{l:'Dead hang grip',v:'Forearm density'}]},core:{title:'Core & Gut',color:'var(--amberB)',items:[{l:'Novair Debloat',v:'Dandelion + prebiotics'},{l:'Liver 01–03',v:'IGF-1 synthesis'},{l:'Omega-3',v:'GH→IGF-1'}]},legs:{title:'Legs & Plates',color:'var(--sageBright)',items:[{l:'Barbell squat',v:'King of axial loading'},{l:'Leg press + ext.',v:'Volume'},{l:'Ca+D3+K2+Boron',v:'New bone mineralisation'}]},feet:{title:'Feet & Ground',color:'var(--txtM)',items:[{l:'Badminton 3×/wk',v:'Ground reaction forces'},{l:'10K steps',v:'Lymphatic + Qi'},{l:'Barefoot Qi Gong',v:'Earth grounding'}]}};
+document.querySelectorAll('.body-zone').forEach(z=>{z.addEventListener('click',()=>{const zone=z.dataset.zone;if(!bodyData[zone])return;document.querySelectorAll('.body-zone').forEach(b=>b.classList.remove('active'));document.querySelectorAll(`[data-zone="${zone}"]`).forEach(b=>b.classList.add('active'));const d=bodyData[zone];document.getElementById('bodyInfo').innerHTML=`<div class="body-info-card"><h4 style="color:${d.color}">${d.title}</h4>${d.items.map(i=>`<div class="growth-stat"><div class="growth-stat-dot" style="background:${d.color}"></div><span class="growth-stat-label">${i.l}</span><span class="growth-stat-value">${i.v}</span></div>`).join('')}</div>`})});
+function toggleSkin(el){const o=el.classList.contains('open');document.querySelectorAll('.skin-item').forEach(s=>s.classList.remove('open'));if(!o)el.classList.add('open')}
+// Face map data
+const faceData={
+forehead:{title:'Forehead & T-Zone',sub:'HIGHEST SEBUM PRODUCTION',color:'var(--amberB)',products:[
+{name:'Tołpa Face Wash',dot:'var(--sage)',reason:'Sebum concentration highest here. pH 5.5 cleanser dissolves excess oil without stripping the acid mantle. <em>Clears surface Damp-Heat.</em>'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'↓Sebum production 20–30% specifically in T-zone. ↑Ceramide synthesis strengthens barrier where it\'s thinnest. <em>Consolidates Wei Qi at the frontline.</em>'},
+{name:'BHA Salicylic 2%',dot:'var(--rose)',reason:'Oil-soluble — penetrates into pores to dissolve hardened sebum plugs. T-zone benefits most. Leave on overnight. <em>Drains Damp-Heat from pores.</em>'},
+{name:'SPF 50',dot:'var(--sand)',reason:'Forehead receives most direct UV. Mandatory every AM, especially post-BHA (photosensitising).'}
+]},
+nose:{title:'Nose & Blackheads',sub:'DEEPEST PORES · MOST CONGESTION',color:'var(--rose)',products:[
+{name:'Salicylic Acid 2%',dot:'var(--rose)',reason:'BHA is lipophilic — it enters the oil-filled pore and dissolves the plug from inside. The nose has the deepest pores and most active sebaceous glands. <em>Targeted Damp-Heat clearing at the body\'s centre line.</em>'},
+{name:'Face Scrub (Sun)',dot:'var(--txtM)',reason:'Physical exfoliation clears surface buildup that BHA can\'t reach. Gentle circular motion on nose. <em>Once weekly — excessive scrubbing injures Wei Qi.</em>'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'Tightens the appearance of pores through ceramide matrix reinforcement. Applied post-BHA.'}
+]},
+cheeks:{title:'Cheeks',sub:'BARRIER · REDNESS · HYDRATION',color:'var(--sageBright)',products:[
+{name:'Acne & Redness Killer',dot:'var(--rose)',reason:'Cheeks show redness first — thinner skin with more visible capillaries. Anti-inflammatory botanicals calm reactive patches. <em>Cools Blood Heat at the surface.</em>'},
+{name:'Copper Peptides 1%',dot:'var(--amber)',reason:'GHK-Cu stimulates collagen I/III where skin is thinnest. Cheeks lose collagen fastest with age. <em>Nourishes Kidney Jing at skin level — Liver Blood feeds connective tissue.</em>'},
+{name:'CICA Cream',dot:'var(--sage)',reason:'Centella asiatica repairs barrier on cheeks where moisture loss is highest. Seals actives beneath. <em>Active during Lung time 03–05:00.</em>'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'Fades post-inflammatory hyperpigmentation (PIH) — the dark marks left after breakouts on cheeks.'}
+]},
+chin:{title:'Chin & Jawline',sub:'HORMONAL ZONE · CYSTIC BREAKOUTS',color:'var(--slate)',products:[
+{name:'BHA Salicylic 2%',dot:'var(--rose)',reason:'Chin and jawline breakouts are almost always hormonal — deep, cystic, driven by androgens. BHA penetrates deep to clear the root. <em>Drains Damp-Heat from the lower Jiao.</em>'},
+{name:'Acne & Redness Killer',dot:'var(--rose)',reason:'Anti-inflammatory action on painful cystic spots. Morning application calms overnight flare-ups.'},
+{name:'Zinc (internal)',dot:'var(--amber)',reason:'15–25mg with dinner — regulates 5α-reductase (converts T→DHT, the acne driver). Chin acne responds to internal zinc within 4–8 weeks. <em>Kidney Jing governs hormonal balance.</em>'},
+{name:'CICA Cream',dot:'var(--sage)',reason:'Jaw movements stress this area — CICA\'s wound-healing properties are critical here.'}
+]},
+full:{title:'Full Face — Every Day',sub:'APPLIED EVERYWHERE · MORNING + EVENING',color:'var(--sand)',products:[
+{name:'Tołpa Face Wash',dot:'var(--sage)',reason:'Full-face cleanse AM + PM. Removes sunscreen, pollution, oxidised sebum. Never skip — uncleansed skin clogs regardless of actives.'},
+{name:'BHL Toner',dot:'var(--sage)',reason:'Prep layer — balances pH after cleansing. Ensures actives absorb optimally. <em>While it lasts.</em>'},
+{name:'Niacinamide 10%',dot:'var(--sage)',reason:'Safe every day, AM + PM, on all zones. The universal repair molecule — sebum, barrier, pigmentation, inflammation.'},
+{name:'Norse Moisturize (AM)',dot:'var(--sand)',reason:'6-in-1 daily glow. Locks in morning actives before SPF. AM only.'},
+{name:'SPF 50',dot:'var(--sand)',reason:'Final AM step. UV is the #1 cause of premature ageing. <em>Protects Wei Qi from external Fire toxin.</em>'},
+{name:'CICA Cream (PM)',dot:'var(--sage)',reason:'Final PM step every night. Seals everything. Centella works while you sleep. <em>Sheng Ji — generates flesh.</em>'}
+]}
+};
+// AM/PM face data
+const faceAM={forehead:['Tołpa Face Wash','Niacinamide 10%','SPF 50'],nose:['Tołpa Face Wash','Niacinamide 10%','SPF 50'],cheeks:['Acne & Redness Killer','Niacinamide 10%','SPF 50'],chin:['Acne & Redness Killer','Niacinamide 10%','SPF 50'],full:['Tołpa Face Wash','BHL Toner','Niacinamide 10%','Norse Moisturize (AM)','SPF 50']};
+const facePM={forehead:['Tołpa Face Wash','BHA Salicylic 2%','Niacinamide 10%','CICA Cream'],nose:['Salicylic Acid 2%','Face Scrub (Sun)','Niacinamide 10%','CICA Cream'],cheeks:['Copper Peptides 1%','CICA Cream','Niacinamide 10%'],chin:['BHA Salicylic 2%','Zinc (internal)','CICA Cream'],full:['Tołpa Face Wash','BHL Toner','Active (Copper OR BHA)','Niacinamide 10%','CICA Cream']};
+document.querySelectorAll('.face-zone').forEach(z=>{
+z.addEventListener('click',()=>{
+const zone=z.dataset.face;if(!faceData[zone])return;
+document.querySelectorAll('.face-zone').forEach(b=>b.classList.remove('fz-active'));
+document.querySelectorAll(`[data-face="${zone}"]`).forEach(b=>b.classList.add('fz-active'));
+const d=faceData[zone];
+const filterSet=skinTimeMode==='am'?faceAM[zone]:facePM[zone];
+const filtered=filterSet?d.products.filter(p=>filterSet.includes(p.name)):d.products;
+const modeTag=skinTimeMode==='am'?'☀ MORNING':'☽ EVENING';
+document.getElementById('faceInfo').innerHTML=`<div class="face-info-card"><h4 style="color:${d.color}">${d.title}</h4><div class="fi-sub">${modeTag} · ${d.sub}</div>${filtered.map(p=>`<div class="fi-product"><div class="fi-dot" style="background:${p.dot};color:${p.dot}"></div><div><div class="fi-name">${p.name}</div><div class="fi-reason">${p.reason}</div></div></div>`).join('')}</div>`;
+});
+});
+const D={mon:{l:'Monday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Push A — W.Dips + Chest',cold:false},tue:{l:'Tuesday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Pull + Sled VO2',cold:true},wed:{l:'Wednesday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Legs + Badminton',cold:false},thu:{l:'Thursday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Arms (Bicep)',cold:true},fri:{l:'Friday',e:'copper',c:'var(--slate)',b:'var(--slateD)',t:'Copper Peptide Night',tr:'Push B + Badminton',cold:false},sat:{l:'Saturday',e:'bha',c:'var(--sand)',b:'var(--sandD)',t:'BHA Night',tr:'Badminton',cold:true},sun:{l:'Sunday',e:'rest',c:'var(--sage)',b:'var(--sageD)',t:'Rest Night',tr:'Complete Rest',cold:true}};
+const elI={dawn:`<svg viewBox="0 0 20 20" fill="none" stroke="var(--sand)" stroke-width="1.3" stroke-linecap="round"><circle cx="10" cy="12" r="4"/><path d="M10 2v3M3 12H0M20 12h-3M4.2 5.2l2 2M15.8 5.2l-2 2" opacity=".5"/></svg>`,forge:`<svg viewBox="0 0 20 20" fill="none" stroke="var(--rose)" stroke-width="1.3" stroke-linecap="round"><path d="M10 3c-3 4-5 7-3 10a5 5 0 0 0 6 0c2-3 0-6-3-10z"/></svg>`,tide:`<svg viewBox="0 0 20 20" fill="none" stroke="var(--slate)" stroke-width="1.3" stroke-linecap="round"><path d="M3 10c2-4 5-4 7 0s5 4 7 0"/><path d="M3 14c2-3 5-3 7 0s5 3 7 0" opacity=".5"/></svg>`,aether:`<svg viewBox="0 0 20 20" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round"><path d="M10 2l2.5 5.5L18 10l-5.5 2.5L10 18l-2.5-5.5L2 10l5.5-2.5z"/><circle cx="10" cy="10" r="2" opacity=".4"/></svg>`};
+let ck={};const td=new Date().toDateString();
+function gc(k){const key=td+'_'+k;if(!ck[key])ck[key]={};return ck[key]}
+function tc2(k,i){gc(k)[i]=!gc(k)[i];rc(k)}
+function rs(k){ck[td+'_'+k]={};rc(k)}
+const cc={CIRCADIAN:'var(--sageD)',QIGONG:'var(--sageD)',RECOVERY:'var(--slateD)',NUTRITION:'var(--amberD)',SUPPS:'#7a9e8230',SKIN:'var(--amberD)',TRAINING:'var(--roseD)',HGH:'var(--roseD)',PMSTACK:'var(--slateD)',MOVEMENT:'var(--sageD)',SLEEP:'var(--roseD)'};
+function rc(k){const d=D[k],ch=gc(k);
+const ph=[{name:'Dawn',el:'dawn',time:'07:00–08:00',items:[{time:'07:00',text:'10 min outdoor light',cat:'CIRCADIAN'},{time:'07:00',text:'Ba Duan Jin 5 min',cat:'QIGONG'},...(d.cold?[{time:'07:15',text:'Cold shower 1–3 min',cat:'RECOVERY'}]:[]),{time:'07:30',text:'Shake: Protein+beetroot+creatine+citrulline',cat:'NUTRITION'},{time:'07:30',text:'D3+K2 · Omega-3 · Boron · Vit C',cat:'SUPPS'},{time:'07:30',text:'Novair Debloat',cat:'SUPPS'},{time:'07:45',text:'Skincare AM',cat:'SKIN'}]},{name:'Forge',el:'forge',time:'Training + Midday',items:[{time:'—',text:d.tr,cat:'TRAINING'},{time:'13:00',text:'Caffeine curfew',cat:'CIRCADIAN'}]},{name:'Tide',el:'tide',time:'19:30–20:00',items:[{time:'19:30',text:'Zinc 15–25mg with dinner',cat:'SUPPS'},{time:'20:00',text:'HGH gate — nothing caloric',cat:'HGH'}]},{name:'Aether',el:'aether',time:'21:00–22:30',items:[{time:'21:00',text:'Red/amber screen mode',cat:'CIRCADIAN'},{time:'21:00',text:'Mg + Citrulline + Glycine + Vit C + Apigenin',cat:'PMSTACK'},{time:'21:00',text:'Skincare PM — '+d.t,cat:'SKIN'},{time:'21:15',text:'Mobility 5 min + Dantian 2 min',cat:'MOVEMENT'},{time:'21:30',text:'All screens off',cat:'CIRCADIAN'},{time:'22:30',text:'Lights out · 18–19°C · nasal · wake 07:00',cat:'SLEEP'}]}];
+const all=ph.flatMap(p=>p.items),dn=Object.keys(ch).filter(x=>ch[x]).length,tot=all.length,pct=Math.round((dn/tot)*100),circ=2*Math.PI*19,off=circ-(pct/100)*circ;
+// Streak tracking
+if(pct===100){const s=getStreak(),today=new Date().toDateString();if(s.lastDate!==today){const yesterday=new Date(Date.now()-864e5).toDateString();s.count=s.lastDate===yesterday?s.count+1:1;s.lastDate=today;saveStreak(s);updateStreakDisplay()}}
+updateStreakDisplay();
+let h=`<div class="dtl" style="background:${d.b};color:${d.c}">${d.l} — ${d.t}</div><div class="checklist-header"><div style="display:flex;align-items:center;gap:12px"><div class="progress-ring-wrap"><svg class="progress-ring" width="48" height="48"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--bdr)" stroke-width="3"/><circle cx="24" cy="24" r="19" fill="none" stroke="var(--sage)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${off}"/></svg><div class="progress-pct">${pct}%</div></div><div><div style="font-size:13px;font-weight:600">${dn}/${tot}</div><div class="progress-label">Completed</div></div></div><button class="reset-btn" onclick="rs('${k}')">Reset</button></div>`;
+let idx=0;ph.forEach(p=>{h+=`<div class="el-phase el-${p.el}"><div class="el-phase-header"><div class="el-symbol">${elI[p.el]}</div><span class="el-name">${p.name}</span><span class="el-time-range">${p.time}</span></div>`;p.items.forEach(it=>{const done=ch[idx];h+=`<div class="check-item${done?' done':''}" onclick="tc2('${k}',${idx})"><span class="check-time">${it.time}</span><div class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="check-text">${it.text}</span><span class="check-cat" style="background:${cc[it.cat]||'var(--bdr)'}">${it.cat}</span></div>`;idx++});h+=`</div>`});
+document.getElementById('dp').innerHTML=h}
+function sel(k){document.querySelectorAll('.db').forEach(b=>b.classList.remove('a'));event.target.classList.add('a');rc(k)}
+sel('mon');
+setTimeout(()=>{ck={};const a=document.querySelector('.db.a');if(a)a.click()},new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()+1)-new Date());
+(function(){if(window.matchMedia('(pointer:coarse)').matches||window.innerWidth<768)return;document.body.style.cursor='none';const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx-3+'px';dot.style.top=my-3+'px';if(!dot.classList.contains('visible')){dot.classList.add('visible');ring.classList.add('visible')}});function lerp(){rx+=(mx-rx)*.15;ry+=(my-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lerp)}lerp();const hs='button,.check-item,.pillar,.cmd,.tb,.db,.skin-header,.body-zone,.recv-stat,.recv-card,.tlb,.growth-stat,.tier-orb,.supp-edict,.neuro-node,.face-zone,.fi-product,.skin-rot-card,.supp-tl-dot,.skin-tog-btn,.shop-btn';document.addEventListener('mouseover',e=>{if(e.target.closest(hs)){dot.classList.add('hover-expand');ring.classList.add('hover-expand')}});document.addEventListener('mouseout',e=>{if(e.target.closest(hs)){dot.classList.remove('hover-expand');ring.classList.remove('hover-expand')}});document.addEventListener('mouseleave',()=>{dot.classList.remove('visible');ring.classList.remove('visible')});document.addEventListener('mouseenter',()=>{dot.classList.add('visible');ring.classList.add('visible')});document.querySelectorAll(hs).forEach(el=>{el.style.cursor='none'});new MutationObserver(()=>{document.querySelectorAll(hs).forEach(el=>{el.style.cursor='none'})}).observe(document.body,{childList:true,subtree:true})})();
+</script>
+</body>
+</html>
